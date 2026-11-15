@@ -640,3 +640,52 @@ def ingest_robot_signal(payload: dict):
 def get_latest_signal():
     global _latest_signal
     return _latest_signal
+
+
+def get_quant_currency_matrix():
+    r"""
+    Quantitative Currency Strength & Yield Differential Radar Matrix.
+    Hub: USD at center. Spokes: EUR, GBP, CHF, CAD, NZD, SEK, NOK, JPY.
+    Formulas:
+      d_t = y_t^{2Y} - y_{USD}^{2Y}
+      m_t = SMA_S(d_t) - SMA_L(d_t)
+      w_i \propto -sign(m_i)
+    """
+    currencies = [
+        {"ccy": "EUR", "d_2y": 1.25, "mom": 1.25, "signal": "BUY", "color": "#00e676", "strength": 82, "angle": 90},
+        {"ccy": "GBP", "d_2y": 0.98, "mom": 0.98, "signal": "BUY", "color": "#00e676", "strength": 74, "angle": 45},
+        {"ccy": "NOK", "d_2y": 0.62, "mom": 0.62, "signal": "BUY", "color": "#00e676", "strength": 65, "angle": 180},
+        {"ccy": "SEK", "d_2y": 0.41, "mom": 0.41, "signal": "BUY", "color": "#00e676", "strength": 58, "angle": 225},
+        {"ccy": "JPY", "d_2y": -0.38, "mom": -0.38, "signal": "SELL", "color": "#ff3366", "strength": 42, "angle": 135},
+        {"ccy": "CHF", "d_2y": -0.71, "mom": -0.71, "signal": "SELL", "color": "#ff3366", "strength": 35, "angle": 0},
+        {"ccy": "CAD", "d_2y": -0.93, "mom": -0.93, "signal": "SELL", "color": "#ff3366", "strength": 29, "angle": 315},
+        {"ccy": "AUD", "d_2y": -1.12, "mom": -1.12, "signal": "SELL", "color": "#ff3366", "strength": 22, "angle": 270},
+        {"ccy": "NZD", "d_2y": -1.34, "mom": -1.34, "signal": "SELL", "color": "#ff3366", "strength": 18, "angle": 270}
+    ]
+    
+    return {
+        "hub": "USD",
+        "description": "Interest Rate Differential Momentum (2Y Yield Spread)",
+        "formula": {
+            "d_t": "d_t = y_t^{2Y} - y_{USD}^{2Y}",
+            "m_t": "m_t = SMA_S(d_t) - SMA_L(d_t)",
+            "w_i": "w_i \\propto -\\text{sign}(m_i)",
+            "fair_value": "Fair value = moving target"
+        },
+        "mql5_code": [
+            "// --- MQL5 Quantitative Momentum Terminal ---",
+            "input long MagicA = 1001; // Merlin 1 Gold Core",
+            "input long MagicB = 2002; // Merlin 2 BTC Alpha",
+            "",
+            "double diff = y2[i] - y2_us;",
+            "double mom = ma_fast - ma_slow;",
+            "int signal = 0;",
+            "if(MathAbs(mom) > threshold) {",
+            "    signal = -MathSign(mom);",
+            "}",
+            "RebalancePortfolio();"
+        ],
+        "rebalance_schedule": "Twice Daily (00:00 UTC | 12:00 UTC)",
+        "currencies": currencies
+    }
+
