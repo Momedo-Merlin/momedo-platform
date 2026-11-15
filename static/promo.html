@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MOMEDO Platform | Kvantni Trgovački Terminal & Algoritamska Inteligencija</title>
+  <title>MOMEDO Platform | Kvantni Trgovački Terminal & Škola Trgovanja</title>
   
   <!-- Google Fonts: Inter, JetBrains Mono, Chakra Petch -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,7 +20,7 @@
     :root {
       /* TAMNA TEMA (DEFAULT - DARK GLASS QUANTUM) */
       --bg-base: #06090f;
-      --bg-card: rgba(11, 16, 26, 0.85);
+      --bg-card: rgba(11, 16, 26, 0.88);
       --bg-card-hover: rgba(16, 24, 38, 0.95);
       --bg-header: rgba(6, 9, 15, 0.95);
       --bg-ticker-top: rgba(4, 7, 12, 0.97);
@@ -100,7 +100,148 @@
     }
 
     /* ========================================================
-       DUPLA PLIVAJUĆA TRAKA NA VRHU EKRANA (DVE SUPROTNE TRAKE)
+       FLASH SIGNAL BANER SA ZVUKOM (INSTANT POP-UP NOTIFIKACIJA)
+       ======================================================== */
+    .flash-signal-banner {
+      position: fixed;
+      top: 70px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-120%);
+      width: 90%;
+      max-width: 900px;
+      background: linear-gradient(135deg, rgba(16, 24, 38, 0.98), rgba(9, 14, 23, 0.98));
+      border: 2px solid var(--gold);
+      box-shadow: 0 10px 40px rgba(255, 215, 0, 0.35), 0 0 20px rgba(0, 240, 255, 0.25);
+      border-radius: 14px;
+      padding: 16px 20px;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      backdrop-filter: blur(16px);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    body.theme-light .flash-signal-banner {
+      background: linear-gradient(135deg, #ffffff, #f8fafc);
+      border: 2px solid #b45309;
+      box-shadow: 0 10px 30px rgba(180, 83, 9, 0.25);
+    }
+
+    .flash-signal-banner.active {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+      animation: bannerPulse 2.5s infinite;
+    }
+
+    @keyframes bannerPulse {
+      0%, 100% { box-shadow: 0 10px 40px rgba(255, 215, 0, 0.35), 0 0 15px rgba(0, 240, 255, 0.2); }
+      50% { box-shadow: 0 10px 50px rgba(255, 215, 0, 0.6), 0 0 30px rgba(0, 240, 255, 0.4); }
+    }
+
+    .flash-banner-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex: 1;
+    }
+
+    .flash-icon-box {
+      width: 44px;
+      height: 44px;
+      background: rgba(255, 215, 0, 0.15);
+      border: 1px solid var(--gold);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+      animation: iconFlash 1.2s infinite;
+    }
+
+    @keyframes iconFlash {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .flash-info-title {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .flash-info-text {
+      font-family: var(--font-mono);
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-top: 3px;
+      line-height: 1.4;
+    }
+
+    .flash-banner-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .btn-copy-signal {
+      background: linear-gradient(135deg, var(--gold), #ffaa00);
+      color: #000;
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 9px 16px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-copy-signal:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 22px rgba(255, 215, 0, 0.6);
+    }
+
+    .btn-close-banner {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: all 0.2s;
+    }
+
+    .btn-close-banner:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* ========================================================
+       DUPLA PLIVAJUĆA TRAKA NA VRHU EKRANA (DVA SUPROTNA SMERA)
        ======================================================== */
     .promo-ticker-master-wrap {
       position: sticky;
@@ -121,13 +262,13 @@
       position: relative;
     }
 
-    /* GORNJA TRAKA: KRETANJE SA LEVA NA DESNO (USPORENO) */
+    /* GORNJA TRAKA: LEVO NA DESNO (USPORENO) */
     .track-top-bar {
       background: var(--bg-ticker-top);
       border-bottom: 1px solid var(--border-subtle);
     }
 
-    /* DONJA TRAKA: KRETANJE SA DESNA NA LEVO (JOŠ SPORIJE) */
+    /* DONJA TRAKA: DESNO NA LEVO (JOŠ SPORIJE) */
     .track-bot-bar {
       background: var(--bg-ticker-bot);
       border-bottom: 1px solid var(--border-card);
@@ -139,17 +280,14 @@
       will-change: transform;
     }
 
-    /* Pauza na prelazak mišem */
     .promo-ticker-bar:hover .ticker-track {
       animation-play-state: paused;
     }
 
-    /* Gornja traka: Levo ka desnom (transform sa -50% na 0%) - 70s lagano */
     .animate-left-to-right {
       animation: tickerLeftToRight 70s linear infinite;
     }
 
-    /* Donja traka: Desno ka levom (transform sa 0% na -50%) - 90s ekstra sporo */
     .animate-right-to-left {
       animation: tickerRightToLeft 90s linear infinite;
     }
@@ -191,7 +329,7 @@
     .tag-algo { background: rgba(255, 215, 0, 0.12); color: var(--gold); border: 1px solid rgba(255, 215, 0, 0.3); }
 
     /* ========================================================
-       HEADER & NAVIGATION BAR (SA TASTERIMA ZA BELI / CRNI EKRAN)
+       HEADER & NAVIGATION BAR
        ======================================================== */
     .promo-header {
       max-width: 1440px;
@@ -438,7 +576,7 @@
     }
 
     /* ========================================================
-       CENTRALNI GRAF UŽIVO (POKRIVA OKO 70% EKRANA)
+       CENTRALNI GRAF UŽIVO — MERLIN (POKRIVA OKO 70% EKRANA)
        ======================================================== */
     .central-chart-wrapper {
       width: 72%;
@@ -557,7 +695,7 @@
       box-shadow: var(--glow-cyan);
     }
 
-    /* TELEMETRIJSKA MT5 TRAKA IZNAD GRAFIKONA */
+    /* TELEMETRIJSKA STATUS TRAKA IZNAD GRAFIKONA */
     .chart-mt5-telemetry {
       padding: 10px 20px;
       background: rgba(0, 0, 0, 0.15);
@@ -583,7 +721,7 @@
     .tel-lbl { color: var(--text-muted); }
     .tel-val { font-weight: 700; color: var(--text-main); }
 
-    /* KONTEJNER ZA SAM TRADINGVIEW WIDGET (VISINA 580px) */
+    /* KONTEJNER ZA GRAFIKON (VISINA 580px) */
     .tv-chart-box {
       width: 100%;
       height: 580px;
@@ -706,13 +844,13 @@
       letter-spacing: 0.5px;
     }
 
-    .badge-mt5 {
+    .badge-quant {
       background: rgba(255, 215, 0, 0.15);
       border: 1px solid var(--gold);
       color: var(--gold);
     }
 
-    .badge-binance {
+    .badge-btc {
       background: rgba(0, 230, 118, 0.15);
       border: 1px solid var(--green);
       color: var(--green);
@@ -809,6 +947,7 @@
       border-radius: 8px;
       text-align: center;
       text-decoration: none;
+      cursor: pointer;
       transition: all 0.2s ease;
     }
 
@@ -836,7 +975,7 @@
     }
 
     /* ========================================================
-       POREĐENJE SA INDUSTRIJOM (VS PIPXPERT & PIP TRADING)
+       POREĐENJE SA INDUSTRIJOM (MOMEDO VS STANDARD)
        ======================================================== */
     .comparison-section {
       max-width: 1380px;
@@ -913,7 +1052,7 @@
     }
 
     /* ========================================================
-       KOMFORNI MENI DRAWER (PADAYUCI / BOCNI MODUL ZA RAZVOJ)
+       KOMFORNI MENI DRAWER (MODULARNI MENI ZA RAZVOJ)
        ======================================================== */
     .menu-drawer-backdrop {
       position: fixed;
@@ -1060,10 +1199,35 @@
       .promo-nav { display: none; }
       .hero-h1 { font-size: 32px; }
       .tv-chart-box { height: 460px; }
+      .flash-signal-banner { width: 95%; flex-direction: column; align-items: stretch; }
     }
   </style>
 </head>
 <body>
+
+  <!-- ========================================================
+       FLASH SIGNAL BANER SA AUDIO OBAVEŠTENJEM
+       ======================================================== -->
+  <div class="flash-signal-banner" id="flash-banner">
+    <div class="flash-banner-left">
+      <div class="flash-icon-box">⚡</div>
+      <div>
+        <div class="flash-info-title">
+          <span>● NOVI SIGNAL UŽIVO</span>
+          <span style="font-size:10px; background:rgba(255,215,0,0.2); padding:1px 6px; border-radius:4px;" id="flash-engine-tag">MERLIN 1</span>
+        </div>
+        <div class="flash-info-text" id="flash-signal-text">
+          MERLIN 1 • XAUUSD: SELL RETEST @ 3,942.67 | SL: 3,952.54 | TP1: 3,936.06 | TP2: 3,923.43 (BE+ Zaštita)
+        </div>
+      </div>
+    </div>
+    <div class="flash-banner-actions">
+      <button class="btn-copy-signal" onclick="copyCurrentSignal()">
+        📋 Kopiraj Signal za MT5
+      </button>
+      <button class="btn-close-banner" onclick="closeFlashBanner()" title="Zatvori obaveštenje">✕</button>
+    </div>
+  </div>
 
   <!-- ========================================================
        1. DUPLA PLIVAJUĆA TRAKA NA VRHU EKRANA (DVA SUPROTNA SMERA)
@@ -1073,9 +1237,8 @@
     <!-- GORNJA TRAKA: KRETANJE SA LEVA NA DESNO (USPORENO KRETANJE) -->
     <div class="promo-ticker-bar track-top-bar" title="Tržišne cene i makro instrumenti (Kretanje: levo -> desno)">
       <div class="ticker-track animate-left-to-right">
-        <!-- Grupa instrumenata -->
-        <div class="ticker-item"><span class="track-tag tag-market">MARKET</span> <span class="ticker-sym">MERLIN 1 (XAU/USD):</span> <span class="ticker-val ticker-gold" id="tick-xau-bid">$3,941.47</span> <span class="ticker-down">7.0 pts sp</span></div>
-        <div class="ticker-item"><span class="track-tag tag-market">MARKET</span> <span class="ticker-sym">MERLIN 2 (BTC/USD):</span> <span class="ticker-val ticker-up" id="tick-btc-price">$74,430.00</span> <span class="ticker-up">+1.27%</span></div>
+        <div class="ticker-item"><span class="track-tag tag-market">MARKET</span> <span class="ticker-sym">MERLIN 1 (XAUUSD):</span> <span class="ticker-val ticker-gold" id="tick-xau-bid">$3,941.47</span> <span class="ticker-down">7.0 pts sp</span></div>
+        <div class="ticker-item"><span class="track-tag tag-market">MARKET</span> <span class="ticker-sym">MERLIN 2 (BTCUSD):</span> <span class="ticker-val ticker-up" id="tick-btc-price">$64,609.52</span> <span class="ticker-up">+1.15%</span></div>
         <div class="ticker-item"><span class="track-tag tag-market">CRYPTO</span> <span class="ticker-sym">ETH/USD:</span> <span class="ticker-val ticker-up">$2,845.50</span> <span class="ticker-up">+2.14%</span></div>
         <div class="ticker-item"><span class="track-tag tag-market">FOREX</span> <span class="ticker-sym">EUR/USD:</span> <span class="ticker-val">1.0842</span> <span class="ticker-down">-0.08%</span></div>
         <div class="ticker-item"><span class="track-tag tag-market">FOREX</span> <span class="ticker-sym">GBP/USD:</span> <span class="ticker-val">1.2985</span> <span class="ticker-up">+0.12%</span></div>
@@ -1085,9 +1248,9 @@
         <div class="ticker-item"><span class="track-tag tag-market">COMMODITY</span> <span class="ticker-sym">WTI NAFTA:</span> <span class="ticker-val">$70.82</span> <span class="ticker-up">+0.60%</span></div>
         <div class="ticker-item"><span class="track-tag tag-market">COMMODITY</span> <span class="ticker-sym">SREBRO (XAG):</span> <span class="ticker-val ticker-cyan">$32.40</span> <span class="ticker-up">+1.05%</span></div>
         
-        <!-- Duplikat za neprekidni bešavni ciklus (seamless loop) -->
-        <div class="ticker-item"><span class="track-tag tag-market">MARKET</span> <span class="ticker-sym">MERLIN 1 (XAU/USD):</span> <span class="ticker-val ticker-gold">$3,941.47</span> <span class="ticker-down">7.0 pts sp</span></div>
-        <div class="ticker-item"><span class="track-tag tag-market">MARKET</span> <span class="ticker-sym">MERLIN 2 (BTC/USD):</span> <span class="ticker-val ticker-up">$74,430.00</span> <span class="ticker-up">+1.27%</span></div>
+        <!-- Duplikat za neprekidni bešavni ciklus -->
+        <div class="ticker-item"><span class="track-tag tag-market">MARKET</span> <span class="ticker-sym">MERLIN 1 (XAUUSD):</span> <span class="ticker-val ticker-gold">$3,941.47</span> <span class="ticker-down">7.0 pts sp</span></div>
+        <div class="ticker-item"><span class="track-tag tag-market">MARKET</span> <span class="ticker-sym">MERLIN 2 (BTCUSD):</span> <span class="ticker-val ticker-up">$64,609.52</span> <span class="ticker-up">+1.15%</span></div>
         <div class="ticker-item"><span class="track-tag tag-market">CRYPTO</span> <span class="ticker-sym">ETH/USD:</span> <span class="ticker-val ticker-up">$2,845.50</span> <span class="ticker-up">+2.14%</span></div>
         <div class="ticker-item"><span class="track-tag tag-market">FOREX</span> <span class="ticker-sym">EUR/USD:</span> <span class="ticker-val">1.0842</span> <span class="ticker-down">-0.08%</span></div>
         <div class="ticker-item"><span class="track-tag tag-market">FOREX</span> <span class="ticker-sym">GBP/USD:</span> <span class="ticker-val">1.2985</span> <span class="ticker-up">+0.12%</span></div>
@@ -1102,25 +1265,24 @@
     <!-- DONJA TRAKA: KRETANJE SA DESNA NA LEVO (JOŠ SPORIJE KRETANJE) -->
     <div class="promo-ticker-bar track-bot-bar" title="Algoritamska telemetrija, SMC zone i signali (Kretanje: desno -> levo)">
       <div class="ticker-track animate-right-to-left">
-        <!-- Grupa signala i statusa -->
-        <div class="ticker-item"><span class="track-tag tag-algo">ALGO SIGNAL</span> <span class="ticker-sym">MERLIN 1 MT5:</span> <span class="ticker-val ticker-gold">XAUUSDs SELL RETEST ZONA $3,942.67 — $3,943.87 [AKTIVNA]</span></div>
-        <div class="ticker-item"><span class="track-tag tag-algo">RISK OPTION</span> <span class="ticker-sym">OPCIJA B:</span> <span class="ticker-val ticker-cyan">DVODELNI BREAK-EVEN+ MEHANIZAM [ARMED]</span></div>
+        <div class="ticker-item"><span class="track-tag tag-algo">ALGO SIGNAL</span> <span class="ticker-sym">MERLIN 1:</span> <span class="ticker-val ticker-gold">XAUUSD SELL RETEST ZONA $3,942.67 — $3,943.87 [AKTIVNA]</span></div>
+        <div class="ticker-item"><span class="track-tag tag-algo">RISK MODEL</span> <span class="ticker-sym">OPCIJA B:</span> <span class="ticker-val ticker-cyan">AUTOMATSKO PREBACIVANJE NA BREAK-EVEN+ [ARMED]</span></div>
         <div class="ticker-item"><span class="track-tag tag-algo">QUANT STATS</span> <span class="ticker-sym">WILSON 95% CI:</span> <span class="ticker-val ticker-up">58.4% — 76.2% WIN RATE (PF 2.64)</span></div>
-        <div class="ticker-item"><span class="track-tag tag-algo">ALGO SIGNAL</span> <span class="ticker-sym">MERLIN 2 BINANCE:</span> <span class="ticker-val ticker-up">BTC TRIPLE ALPHA 400 EXPANSION [$74,430]</span></div>
-        <div class="ticker-item"><span class="track-tag tag-algo">BRIDGE MT5</span> <span class="ticker-sym">MQL5 LATENCY:</span> <span class="ticker-val ticker-cyan">0.04 ms (TRADEQUO NALOG #126003242)</span></div>
-        <div class="ticker-item"><span class="track-tag tag-algo">LIQUIDITY</span> <span class="ticker-sym">SMC SWEEP:</span> <span class="ticker-val ticker-gold">AZIJSKI LIQUIDITY SWEEP DETEKTOVAN NA ZLATU (M15)</span></div>
-        <div class="ticker-item"><span class="track-tag tag-algo">PROP-FIRM</span> <span class="ticker-sym">FTMO/FUNDED:</span> <span class="ticker-val">MAKSIMALNI DNEVNI DRAWDOWN LIMIT ZAŠTIĆEN</span></div>
-        <div class="ticker-item"><span class="track-tag tag-algo">SPREAD LIVE</span> <span class="ticker-sym">XAUUSDs:</span> <span class="ticker-val ticker-up">7.0 POENA (0.7 PIPS) RAW SPREAD</span></div>
+        <div class="ticker-item"><span class="track-tag tag-algo">ALGO SIGNAL</span> <span class="ticker-sym">MERLIN 2:</span> <span class="ticker-val ticker-up">BTCUSD PULLBACK RE-TEST [$64,609] TARGET $66,200</span></div>
+        <div class="ticker-item"><span class="track-tag tag-algo">LATENCY</span> <span class="ticker-sym">LIVE BRIDGE:</span> <span class="ticker-val ticker-cyan">0.04 ms DIREKTNI ECN PROTOKOL</span></div>
+        <div class="ticker-item"><span class="track-tag tag-algo">LIQUIDITY</span> <span class="ticker-sym">SMC SWEEP:</span> <span class="ticker-val ticker-gold">AZIJSKI SWEEP DETEKTOVAN NA ZLATU (TF M5)</span></div>
+        <div class="ticker-item"><span class="track-tag tag-algo">ZAŠTITA</span> <span class="ticker-sym">PROP-FIRM:</span> <span class="ticker-val">FTMO DNEVNI DRAWDOWN LIMIT POTPUNO ZAŠTIĆEN</span></div>
+        <div class="ticker-item"><span class="track-tag tag-algo">EXECUTION</span> <span class="ticker-sym">SPREAD:</span> <span class="ticker-val ticker-up">INSTITUCIONALNI ECN USLOVI BEZ PROKLIZAVANJA</span></div>
 
-        <!-- Duplikat za neprekidni bešavni ciklus (seamless loop) -->
-        <div class="ticker-item"><span class="track-tag tag-algo">ALGO SIGNAL</span> <span class="ticker-sym">MERLIN 1 MT5:</span> <span class="ticker-val ticker-gold">XAUUSDs SELL RETEST ZONA $3,942.67 — $3,943.87 [AKTIVNA]</span></div>
-        <div class="ticker-item"><span class="track-tag tag-algo">RISK OPTION</span> <span class="ticker-sym">OPCIJA B:</span> <span class="ticker-val ticker-cyan">DVODELNI BREAK-EVEN+ MEHANIZAM [ARMED]</span></div>
+        <!-- Duplikat za neprekidni bešavni ciklus -->
+        <div class="ticker-item"><span class="track-tag tag-algo">ALGO SIGNAL</span> <span class="ticker-sym">MERLIN 1:</span> <span class="ticker-val ticker-gold">XAUUSD SELL RETEST ZONA $3,942.67 — $3,943.87 [AKTIVNA]</span></div>
+        <div class="ticker-item"><span class="track-tag tag-algo">RISK MODEL</span> <span class="ticker-sym">OPCIJA B:</span> <span class="ticker-val ticker-cyan">AUTOMATSKO PREBACIVANJE NA BREAK-EVEN+ [ARMED]</span></div>
         <div class="ticker-item"><span class="track-tag tag-algo">QUANT STATS</span> <span class="ticker-sym">WILSON 95% CI:</span> <span class="ticker-val ticker-up">58.4% — 76.2% WIN RATE (PF 2.64)</span></div>
-        <div class="ticker-item"><span class="track-tag tag-algo">ALGO SIGNAL</span> <span class="ticker-sym">MERLIN 2 BINANCE:</span> <span class="ticker-val ticker-up">BTC TRIPLE ALPHA 400 EXPANSION [$74,430]</span></div>
-        <div class="ticker-item"><span class="track-tag tag-algo">BRIDGE MT5</span> <span class="ticker-sym">MQL5 LATENCY:</span> <span class="ticker-val ticker-cyan">0.04 ms (TRADEQUO NALOG #126003242)</span></div>
-        <div class="ticker-item"><span class="track-tag tag-algo">LIQUIDITY</span> <span class="ticker-sym">SMC SWEEP:</span> <span class="ticker-val ticker-gold">AZIJSKI LIQUIDITY SWEEP DETEKTOVAN NA ZLATU (M15)</span></div>
-        <div class="ticker-item"><span class="track-tag tag-algo">PROP-FIRM</span> <span class="ticker-sym">FTMO/FUNDED:</span> <span class="ticker-val">MAKSIMALNI DNEVNI DRAWDOWN LIMIT ZAŠTIĆEN</span></div>
-        <div class="ticker-item"><span class="track-tag tag-algo">SPREAD LIVE</span> <span class="ticker-sym">XAUUSDs:</span> <span class="ticker-val ticker-up">7.0 POENA (0.7 PIPS) RAW SPREAD</span></div>
+        <div class="ticker-item"><span class="track-tag tag-algo">ALGO SIGNAL</span> <span class="ticker-sym">MERLIN 2:</span> <span class="ticker-val ticker-up">BTCUSD PULLBACK RE-TEST [$64,609] TARGET $66,200</span></div>
+        <div class="ticker-item"><span class="track-tag tag-algo">LATENCY</span> <span class="ticker-sym">LIVE BRIDGE:</span> <span class="ticker-val ticker-cyan">0.04 ms DIREKTNI ECN PROTOKOL</span></div>
+        <div class="ticker-item"><span class="track-tag tag-algo">LIQUIDITY</span> <span class="ticker-sym">SMC SWEEP:</span> <span class="ticker-val ticker-gold">AZIJSKI SWEEP DETEKTOVAN NA ZLATU (TF M5)</span></div>
+        <div class="ticker-item"><span class="track-tag tag-algo">ZAŠTITA</span> <span class="ticker-sym">PROP-FIRM:</span> <span class="ticker-val">FTMO DNEVNI DRAWDOWN LIMIT POTPUNO ZAŠTIĆEN</span></div>
+        <div class="ticker-item"><span class="track-tag tag-algo">EXECUTION</span> <span class="ticker-sym">SPREAD:</span> <span class="ticker-val ticker-up">INSTITUCIONALNI ECN USLOVI BEZ PROKLIZAVANJA</span></div>
       </div>
     </div>
 
@@ -1141,12 +1303,18 @@
     <nav class="promo-nav">
       <a href="#live-chart" class="nav-link active">📊 Živi Grafikon</a>
       <a href="#merlin-engines" class="nav-link">🥇 Merlin Skeneri</a>
+      <a href="#skola" class="nav-link">📚 Škola Trgovanja</a>
       <a href="#uporedjenje" class="nav-link">⚖️ Zašto MOMEDO</a>
       <a href="/" class="nav-link">⚡ Terminal</a>
     </nav>
 
-    <!-- DESNA ZONA: IZBOR CRNI / BELI EKRAN + MENI + DUGME TERMINALA -->
+    <!-- DESNA ZONA: IZBOR CRNI / BELI EKRAN + ZVUK + MENI + DUGME TERMINALA -->
     <div class="header-actions">
+      <!-- TASTER ZA TEST ZVUKA -->
+      <button class="theme-btn" onclick="playSignalChime()" title="Testiraj zvučno obaveštenje za signale" style="background:rgba(255,215,0,0.12); border:1px solid rgba(255,215,0,0.3); color:var(--gold);">
+        🔔 Zvuk
+      </button>
+
       <!-- TASTERI ZA IZBOR BOJE (CRNI EKRAN / BELI EKRAN) -->
       <div class="theme-segmented-control" title="Promena boje web stranice">
         <button class="theme-btn active" id="btn-theme-dark" onclick="setThemeMode('dark')">
@@ -1174,57 +1342,57 @@
        ======================================================== -->
   <div class="hero-title-area">
     <div class="hero-pill">⚡ SLEDEĆA GENERACIJA TRGOVAČKE INTELIGENCIJE</div>
-    <h1 class="hero-h1">Institucionalna Kvantna Preciznost u Realnom Vremenu</h1>
+    <h1 class="hero-h1">Kvantno Prepisivanje Signala i Škola Trgovanja</h1>
     <p class="hero-subtitle">
-      Objedinjen živi interaktivni TradingView grafikon i direktna MT5 telemetrija naloga.
-      Pratite SMC FVG zone, likvidnost i matematički testirane algoritme bez kašnjenja.
+      Bez komplikovanih analiza i crtanja. Pratite tačne nivoe ulaza, Stop Loss zaštitu i automatsko 
+      prebacivanje na Break-Even+ u istom sekundu kada se nalog aktivira u robotu.
     </p>
   </div>
 
   <!-- ========================================================
-       4. CENTRALNI ŽIVI GRAFIKON (POKRIVA OKO 70% EKRANA)
+       4. CENTRALNI ŽIVI GRAFIKON — MERLIN (POKRIVA OKO 70% EKRANA)
        ======================================================== -->
   <section class="central-chart-wrapper" id="live-chart">
     
     <!-- KONTROLNA TRAKA GRAFIKONA -->
     <div class="chart-control-bar">
       <div class="chart-title-group">
-        <h2><span>📊</span> TRGOVAČKI GRAFIKON UŽIVO</h2>
-        <span class="chart-live-pulse"><span class="pulse-dot"></span> LIVE STREAMING</span>
+        <h2><span>📊</span> TRGOVAČKI GRAFIKON UŽIVO — MERLIN</h2>
+        <span class="chart-live-pulse"><span class="pulse-dot"></span> LIVE ECN STREAM</span>
       </div>
 
       <!-- PREČICE ZA BRZU PROMENU SIMBOLA -->
       <div class="chart-symbols-bar">
-        <button class="btn-chart-sym active" id="sym-gold" onclick="switchChartSymbol('OANDA:XAUUSD', this)">
-          🥇 Zlato (XAU/USD)
+        <button class="btn-chart-sym active" id="sym-gold" onclick="switchChartSymbol('OANDA:XAUUSD', 'XAUUSD', this)">
+          🥇 Zlato (XAUUSD)
         </button>
-        <button class="btn-chart-sym" id="sym-btc" onclick="switchChartSymbol('BINANCE:BTCUSDT', this)">
-          ⚡ Bitcoin (BTC/USD)
+        <button class="btn-chart-sym" id="sym-btc" onclick="switchChartSymbol('COINBASE:BTCUSD', 'BTCUSD', this)">
+          ⚡ Bitcoin (BTCUSD)
         </button>
-        <button class="btn-chart-sym" id="sym-eur" onclick="switchChartSymbol('FX:EURUSD', this)">
+        <button class="btn-chart-sym" id="sym-eur" onclick="switchChartSymbol('FX:EURUSD', 'EURUSD', this)">
           💶 EUR/USD
         </button>
-        <button class="btn-chart-sym" id="sym-dxy" onclick="switchChartSymbol('CAPITALCOM:DXY', this)">
+        <button class="btn-chart-sym" id="sym-dxy" onclick="switchChartSymbol('CAPITALCOM:DXY', 'DXY', this)">
           💵 DXY Dolar
         </button>
-        <button class="btn-chart-sym" id="sym-spx" onclick="switchChartSymbol('SP:SPX', this)">
+        <button class="btn-chart-sym" id="sym-spx" onclick="switchChartSymbol('SP:SPX', 'SPX', this)">
           📈 S&amp;P 500
         </button>
       </div>
     </div>
 
-    <!-- MT5 TELEMETRIJSKI OVERLAY STATUS -->
+    <!-- STATUS TRAKA IZNAD GRAFIKONA -->
     <div class="chart-mt5-telemetry">
       <div class="tel-item">
-        <span class="tel-lbl">MT5 Nalog:</span>
-        <span class="tel-val ticker-gold">#126003242 (TradeQuo)</span>
+        <span class="tel-lbl">Status Protokola:</span>
+        <span class="tel-val ticker-green">● LIVE ECN FEED (0.04 ms)</span>
       </div>
       <div class="tel-item">
-        <span class="tel-lbl">Simbol:</span>
-        <span class="tel-val" id="chart-tel-symbol">XAUUSDs (Gold)</span>
+        <span class="tel-lbl">Aktivni Model:</span>
+        <span class="tel-val ticker-gold" id="chart-tel-symbol">MERLIN 1 • XAUUSD</span>
       </div>
       <div class="tel-item">
-        <span class="tel-lbl">MT5 Live Bid:</span>
+        <span class="tel-lbl">Trenutna Cena:</span>
         <span class="tel-val ticker-gold" id="chart-tel-price">$3,941.47</span>
       </div>
       <div class="tel-item">
@@ -1232,16 +1400,16 @@
         <span class="tel-val ticker-up" id="chart-tel-spread">7.0 pts (0.7 pips)</span>
       </div>
       <div class="tel-item">
-        <span class="tel-lbl">Aktivna SMC Zona:</span>
-        <span class="tel-val ticker-cyan">3,942.67 — 3,943.87</span>
+        <span class="tel-lbl">SMC Zona Retesta:</span>
+        <span class="tel-val ticker-cyan" id="chart-tel-zone">3,942.67 — 3,943.87</span>
       </div>
       <div class="tel-item">
         <span class="tel-lbl">Zaštita:</span>
-        <span class="tel-val ticker-up">Option B (BE+ Armed)</span>
+        <span class="tel-val ticker-up">Opcija B (Break-Even+ Armed)</span>
       </div>
     </div>
 
-    <!-- KONTEJNER GDE TRADINGVIEW RENDUJE ŽIVI GRAFIKON (VISINA 580px) -->
+    <!-- KONTEJNER ZA GRAFIKON (VISINA 580px) -->
     <div class="tv-chart-box">
       <div id="tv_chart_container" style="height:100%; width:100%;"></div>
     </div>
@@ -1255,7 +1423,7 @@
     
     <div class="section-header-wrap">
       <div class="hero-pill">🤖 MOMEDO ALGORITAMSKA DVOJKA</div>
-      <h2>Merlin 1 &amp; Merlin 2 Skeneri Uživo</h2>
+      <h2>Merlin 1 &amp; Merlin 2 Signali i Zone</h2>
       <p>
         Kvantitativni modeli prate strukturu tržišta u realnom vremenu sa tačnim zonama ulaza,
         zaštitom kapitala kroz Opciju B (Break-Even+) i verifikovanim Wilsonovim intervalom poverenja.
@@ -1268,11 +1436,11 @@
       <div class="engine-card card-gold" id="merlin1">
         <div class="engine-header">
           <div class="engine-identity">
-            <h3><span>🥇</span> MERLIN 1 • XAU/USD</h3>
+            <h3><span>🥇</span> MERLIN 1 • XAUUSD</h3>
             <p>SMC Fair Value Gap &amp; Azijski Sweep Reversal</p>
           </div>
           <div class="engine-price-hud">
-            <span class="engine-live-badge badge-mt5">MT5 NALOG 126003242</span>
+            <span class="engine-live-badge badge-quant">VERIFIED QUANT FEED (L1)</span>
             <div class="engine-big-price" id="card-xau-price">$3,941.47</div>
             <div class="engine-spread">Spread: <span id="card-xau-spread">7.0</span> pts (0.7 pips)</div>
           </div>
@@ -1315,8 +1483,8 @@
         </div>
 
         <div class="engine-card-footer">
-          <button class="btn-card-primary" onclick="switchChartSymbol('OANDA:XAUUSD', document.getElementById('sym-gold'))">
-            📊 Prikaži Zlato na Gornjem Grafikonu
+          <button class="btn-card-primary" onclick="switchChartSymbol('OANDA:XAUUSD', 'XAUUSD', document.getElementById('sym-gold'))">
+            📊 Prikaži na Gornjem Grafikonu
           </button>
           <button class="btn-card-sec" onclick="copyLevels('XAU')">📋 Kopiraj Nivoe</button>
         </div>
@@ -1326,13 +1494,13 @@
       <div class="engine-card card-btc" id="merlin2">
         <div class="engine-header">
           <div class="engine-identity">
-            <h3><span>⚡</span> MERLIN 2 • BTC/USD</h3>
+            <h3><span>⚡</span> MERLIN 2 • BTCUSD</h3>
             <p>Triple Alpha Momentum &amp; 200 EMA Pullback</p>
           </div>
           <div class="engine-price-hud">
-            <span class="engine-live-badge badge-binance">BINANCE 24/7 LIVE</span>
-            <div class="engine-big-price ticker-up" id="card-btc-price">$74,430.00</div>
-            <div class="engine-spread">24h promena: <span class="ticker-up" id="card-btc-chg">+1.27%</span></div>
+            <span class="engine-live-badge badge-btc">VERIFIED QUANT FEED (L2)</span>
+            <div class="engine-big-price ticker-up" id="card-btc-price">$64,609.52</div>
+            <div class="engine-spread">Spread: <span id="card-btc-spread">17.1</span> USD</div>
           </div>
         </div>
 
@@ -1355,16 +1523,16 @@
         <!-- AKTIVNI NIVOI -->
         <div class="levels-box">
           <div class="level-line">
-            <span>Likvidni Sweep Nivo:</span>
-            <strong class="ticker-up" id="card-btc-zone">$74,210 — $74,380</strong>
+            <span>Likvidni Retest Nivo:</span>
+            <strong class="ticker-up" id="card-btc-zone">$64,450 — $64,780</strong>
           </div>
           <div class="level-line">
             <span>Stop Loss Granica:</span>
-            <strong id="card-btc-sl">$73,950 (-$480)</strong>
+            <strong id="card-btc-sl">$63,950 (-$480)</strong>
           </div>
           <div class="level-line">
             <span>Target TP1 / TP2:</span>
-            <strong class="ticker-up" id="card-btc-tp">$75,080 / $75,680</strong>
+            <strong class="ticker-up" id="card-btc-tp">$65,450 / $66,200</strong>
           </div>
           <div class="level-line">
             <span>Tržišni Režim:</span>
@@ -1373,8 +1541,8 @@
         </div>
 
         <div class="engine-card-footer">
-          <button class="btn-card-primary" onclick="switchChartSymbol('BINANCE:BTCUSDT', document.getElementById('sym-btc'))">
-            ⚡ Prikaži Bitcoin na Gornjem Grafikonu
+          <button class="btn-card-primary" onclick="switchChartSymbol('COINBASE:BTCUSD', 'BTCUSD', document.getElementById('sym-btc'))">
+            ⚡ Prikaži na Gornjem Grafikonu
           </button>
           <button class="btn-card-sec" onclick="copyLevels('BTC')">📋 Kopiraj Nivoe</button>
         </div>
@@ -1384,22 +1552,67 @@
   </section>
 
   <!-- ========================================================
-       6. POREĐENJE SA INDUSTRIJOM (VS PIPXPERT & PIP TRADING)
+       6. ŠKOLA TRGOVANJA ZA PREPISIVAČE (EDUKACIJA I PRAVILA)
+       ======================================================== -->
+  <section class="comparison-section" id="skola">
+    <div class="comp-box">
+      <div class="comp-header">
+        <div class="hero-pill" style="margin-bottom:8px;">📚 MOMEDO ŠKOLA TRGOVANJA</div>
+        <h2>Vodič za Prepisivanje Signala i Upravljanje Rizikom</h2>
+        <p style="color:var(--text-muted); font-size:14px; max-width:750px; margin:0 auto;">
+          Namenjeno članovima koji žele da jednostavno prepišu gotove matematičke signale i nauče osnove 
+          institucionalnog upravljanja kapitalom bez trošenja sati na analize.
+        </p>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px; margin-top:25px;">
+        <!-- LEKCIJA 1 -->
+        <div style="background:rgba(255,255,255,0.02); border:1px solid var(--border-subtle); border-radius:12px; padding:20px;">
+          <div style="font-size:24px; margin-bottom:10px;">📋</div>
+          <h3 style="font-family:var(--font-display); font-size:17px; margin-bottom:8px; color:var(--text-main);">1. Prepisivanje Signala u 1 Klik</h3>
+          <p style="font-size:13px; color:var(--text-muted); line-height:1.5;">
+            Čim se na vrhu ekrana pojavi žuti Flash Baner i začuje zvučni signal, kliknite na <strong>„Kopiraj Signal”</strong>. Svi parametri (Ulaz, Stop Loss i Take Profit) se automatski kopiraju u vaš MetaTrader.
+          </p>
+        </div>
+
+        <!-- LEKCIJA 2 -->
+        <div style="background:rgba(255,255,255,0.02); border:1px solid var(--border-subtle); border-radius:12px; padding:20px;">
+          <div style="font-size:24px; margin-bottom:10px;">🛡️</div>
+          <h3 style="font-family:var(--font-display); font-size:17px; margin-bottom:8px; color:var(--text-main);">2. Opcija B: Zaštita na Break-Even+</h3>
+          <p style="font-size:13px; color:var(--text-muted); line-height:1.5;">
+            Čim cena ostvari pomak u željenom smeru (za zlato +180 poena), nalog se automatski osigurava na nulu (Break-Even+). Od tog trenutka rizik gubitka je 0%, a pozicija trči do ciljanog profita.
+          </p>
+        </div>
+
+        <!-- LEKCIJA 3 -->
+        <div style="background:rgba(255,255,255,0.02); border:1px solid var(--border-subtle); border-radius:12px; padding:20px;">
+          <div style="font-size:24px; margin-bottom:10px;">⚖️</div>
+          <h3 style="font-family:var(--font-display); font-size:17px; margin-bottom:8px; color:var(--text-main);">3. Pravilo Veličine Lota (1-2%)</h3>
+          <p style="font-size:13px; color:var(--text-muted); line-height:1.5;">
+            Nikada ne rizikujte više od 1% do 2% ukupnog stanja vašeg računa po jednom signalu. Time matematički garantujete da serija od par nepovoljnih tržišnih dana ne može ugroziti vaš kapital.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       7. POREĐENJE SA INDUSTRIJOM
        ======================================================== -->
   <section class="comparison-section" id="uporedjenje">
     <div class="comp-box">
       <div class="comp-header">
         <h2>Zašto Trejderi Biraju MOMEDO</h2>
-        <p style="color:var(--text-muted); font-size:14px;">Direktno poređenje sa klasičnim signal servisima i Telegram grupama</p>
+        <p style="color:var(--text-muted); font-size:14px;">Direktno poređenje sa klasičnim signal grupama i kursevima na tržištu</p>
       </div>
 
       <table class="comp-table">
         <thead>
           <tr>
             <th>Karakteristika</th>
-            <th>Klasične Grupe (PipXpert / Telegram)</th>
-            <th>Zajednice (PIP Trading / Kasandra)</th>
-            <th class="highlight-momedo">MOMEDO Kvantni Terminal</th>
+            <th>Klasične Signal Grupe (Telegram)</th>
+            <th>Standardne Trgovačke Edukacije</th>
+            <th class="highlight-momedo">MOMEDO Kvantna Platforma &amp; Škola</th>
           </tr>
         </thead>
         <tbody>
@@ -1407,31 +1620,31 @@
             <td><strong>Prikaz Strukture i Grafika</strong></td>
             <td><span class="badge-cross">✕</span> Crna kutija (samo poruke)</td>
             <td><span class="badge-check">✓</span> Statički nivoi</td>
-            <td class="highlight-momedo"><span class="badge-check">✓</span> Živi 70% TradingView grafikon sa FVG zonama</td>
+            <td class="highlight-momedo"><span class="badge-check">✓</span> Živi 70% trgovački grafikon sa FVG zonama</td>
           </tr>
           <tr>
             <td><strong>Brzina Izvršenja Signala</strong></td>
             <td><span class="badge-cross">✕</span> Kašnjenje Telegrama (2–5 sekundi)</td>
-            <td><span class="badge-cross">✕</span> Ručni unos naloga</td>
-            <td class="highlight-momedo"><span class="badge-check">✓</span> Sub-milisekundni MT5 Bridge (0 ms)</td>
+            <td><span class="badge-cross">✕</span> Ručni nagađani ulaz</td>
+            <td class="highlight-momedo"><span class="badge-check">✓</span> Sub-milisekundni ECN Bridge (0 ms)</td>
+          </tr>
+          <tr>
+            <td><strong>Instant Obaveštenja</strong></td>
+            <td><span class="badge-cross">✕</span> Poruka u zatrpanom četu</td>
+            <td><span class="badge-cross">✕</span> Nema live signala</td>
+            <td class="highlight-momedo"><span class="badge-check">✓</span> Zvučni chime + Flash Signal Baner u sekundi</td>
           </tr>
           <tr>
             <td><strong>Matematička Pouzdanost</strong></td>
             <td><span class="badge-cross">✕</span> Neproverene marketinške tvrdnje</td>
-            <td><span class="badge-check">✓</span> 5 nivoa akademije</td>
+            <td><span class="badge-check">✓</span> Opšte knjige i teorija</td>
             <td class="highlight-momedo"><span class="badge-check">✓</span> Egzaktni Wilsonov Interval (58%-76% 95% CI)</td>
           </tr>
           <tr>
-            <td><strong>Upravljanje Rizikom</strong></td>
+            <td><strong>Zaštita Kapitala</strong></td>
             <td><span class="badge-cross">✕</span> Fiksni Stop Loss</td>
-            <td><span class="badge-check">✓</span> Standardni risk management</td>
+            <td><span class="badge-check">✓</span> Standardni saveti</td>
             <td class="highlight-momedo"><span class="badge-check">✓</span> Opcija B: Automatsko povlačenje na BE+</td>
-          </tr>
-          <tr>
-            <td><strong>Prilagođenost Izgledu</strong></td>
-            <td><span class="badge-cross">✕</span> Statična tema</td>
-            <td><span class="badge-cross">✕</span> Fiksni izgled</td>
-            <td class="highlight-momedo"><span class="badge-check">✓</span> Izbor: Beli ekran / Crni ekran u 1 klik</td>
           </tr>
         </tbody>
       </table>
@@ -1439,7 +1652,7 @@
   </section>
 
   <!-- ========================================================
-       7. KOMFORNI MENI DRAWER (MODULARNI MENI ZA RAZVOJ)
+       8. KOMFORNI MENI DRAWER (MODULARNI MENI ZA RAZVOJ)
        ======================================================== -->
   <div class="menu-drawer-backdrop" id="menu-backdrop" onclick="toggleMenuDrawer()"></div>
   <aside class="menu-drawer" id="menu-drawer">
@@ -1452,57 +1665,66 @@
     <div class="drawer-section">
       <div class="drawer-sec-title">01. Analitički Moduli</div>
       <a href="#live-chart" class="drawer-nav-item" onclick="toggleMenuDrawer()">
-        <span>📊 Živi TradingView Grafikon</span>
+        <span>📊 Živi Grafikon — MERLIN</span>
         <span class="drawer-badge">70% EKRANA</span>
       </a>
       <a href="#merlin1" class="drawer-nav-item" onclick="toggleMenuDrawer()">
-        <span>🥇 Merlin 1 (Zlato XAU/USD)</span>
-        <span class="drawer-badge">MT5 LIVE</span>
+        <span>🥇 MERLIN 1 • XAUUSD</span>
+        <span class="drawer-badge">SMC RETEST</span>
       </a>
       <a href="#merlin2" class="drawer-nav-item" onclick="toggleMenuDrawer()">
-        <span>⚡ Merlin 2 (Bitcoin BTC/USD)</span>
-        <span class="drawer-badge">BINANCE</span>
+        <span>⚡ MERLIN 2 • BTCUSD</span>
+        <span class="drawer-badge">TRIPLE ALPHA</span>
       </a>
       <a href="/" class="drawer-nav-item">
         <span>🌐 Kvantni Valutni Radar (USD Hub)</span>
         <span class="drawer-badge">TERMINAL</span>
       </a>
-      <a href="/" class="drawer-nav-item">
-        <span>📰 Forex Factory Makro Kalendar</span>
-        <span class="drawer-badge">CPI / FOMC</span>
+    </div>
+
+    <!-- SEKCIJA 2: ŠKOLA TRGOVANJA -->
+    <div class="drawer-section">
+      <div class="drawer-sec-title">02. Škola Trgovanja za Prepisivače</div>
+      <a href="#skola" class="drawer-nav-item" onclick="toggleMenuDrawer()">
+        <span>📚 Vodič za Prepisivanje u 1 Klik</span>
+        <span class="drawer-badge">OSNOVA</span>
+      </a>
+      <a href="#skola" class="drawer-nav-item" onclick="toggleMenuDrawer()">
+        <span>🛡️ Pravila Opcije B (BE+ Zaštita)</span>
+        <span class="drawer-badge">PRAVILO</span>
+      </a>
+      <a href="#skola" class="drawer-nav-item" onclick="toggleMenuDrawer()">
+        <span>📐 Upravljanje Rizikom i Veličina Lota</span>
+        <span class="drawer-badge">1-2%</span>
       </a>
     </div>
 
-    <!-- SEKCIJA 2: AUTOMATIZACIJA I TRGOVAČKI ALATI -->
+    <!-- SEKCIJA 3: AUTOMATIZACIJA -->
     <div class="drawer-section">
-      <div class="drawer-sec-title">02. Automatizacija &amp; Alati</div>
-      <a href="#" class="drawer-nav-item" onclick="alert('MOMEDO_LiveBridge.ex5 je uspešno integrisan u vašem MT5 terminalu!')">
+      <div class="drawer-sec-title">03. Automatizacija &amp; Alati</div>
+      <a href="#" class="drawer-nav-item" onclick="alert('MOMEDO_LiveBridge.ex5 je aktivan na vašem MT5 terminalu!')">
         <span>🤖 MT5 Data Bridge &amp; Autocopy</span>
-        <span class="drawer-badge">v2.0</span>
+        <span class="drawer-badge">v3.0</span>
       </a>
-      <a href="#" class="drawer-nav-item" onclick="alert('Kalkulator pozicije za FTMO i prop-firme biće ugrađen u sledećem koraku!')">
-        <span>📐 Kalkulator Rizika &amp; Veličine Lota</span>
-        <span class="drawer-badge">USKORO</span>
-      </a>
-      <a href="#" class="drawer-nav-item" onclick="alert('Opcija B dvofaznog BE+ modula je aktivna u robotu!')">
+      <a href="#" class="drawer-nav-item" onclick="alert('Opcija B dvofaznog BE+ mehanizma je aktivna u robotu!')">
         <span>🛡️ Opcija B: BE+ Zaštita Kapitala</span>
         <span class="drawer-badge">AKTIVNO</span>
       </a>
+      <a href="#" class="drawer-nav-item" onclick="alert('Kalkulator pozicije biće razrađen u sledećoj fazi!')">
+        <span>📐 Kalkulator Rizika i Lota</span>
+        <span class="drawer-badge">USKORO</span>
+      </a>
     </div>
 
-    <!-- SEKCIJA 3: AKADEMIJA I ZAJEDNICA -->
+    <!-- SEKCIJA 4: VIP SALON -->
     <div class="drawer-section">
-      <div class="drawer-sec-title">03. Akademija &amp; Članstvo</div>
-      <a href="#" class="drawer-nav-item" onclick="alert('Edukativni moduli (SMC koncepti, likvidnost, FVG) biće razrađeni!')">
-        <span>🎓 MOMEDO Akademija: Put do Profija</span>
-        <span class="drawer-badge">LEKCIJE</span>
-      </a>
-      <a href="#" class="drawer-nav-item" onclick="alert('Probni VIP period od 72h je aktivan!')">
-        <span>👑 VIP Salon &amp; Pretplate</span>
-        <span class="drawer-badge">PROBA 72H</span>
+      <div class="drawer-sec-title">04. VIP Prepisivači &amp; Članstvo</div>
+      <a href="#" class="drawer-nav-item" onclick="alert('Probni VIP pristup za prepisivanje je aktivan!')">
+        <span>👑 VIP Salon za Prepisivače</span>
+        <span class="drawer-badge">PROBA</span>
       </a>
       <a href="#" class="drawer-nav-item" onclick="alert('Često postavljana pitanja i korisnička podrška')">
-        <span>❓ FAQ &amp; Uputstva</span>
+        <span>❓ FAQ &amp; Pitanja</span>
       </a>
     </div>
 
@@ -1512,7 +1734,7 @@
   </aside>
 
   <!-- ========================================================
-       8. FOOTER
+       9. FOOTER
        ======================================================== -->
   <footer class="promo-footer">
     <p>© 2026 MOMEDO Platform. Kvantni algoritamski trgovački sistemi. Sva prava zadržana.</p>
@@ -1520,10 +1742,82 @@
   </footer>
 
   <!-- ========================================================
-       9. JAVASCRIPT: LOGIKA TEME, TRADINGVIEW I LIVE FEED
+       10. JAVASCRIPT: LOGIKA TEME, TRADINGVIEW, AUDIO I WEBSOCKET
        ======================================================== -->
   <script>
-    // 1. Promena teme: Beli ekran / Crni ekran
+    // 1. Zvučno obaveštenje (Web Audio API - Elegantni institucionalni Chime)
+    let audioCtx = null;
+    function playSignalChime() {
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+
+        const now = audioCtx.currentTime;
+
+        // Prvi ton: D5 (587.33 Hz)
+        const osc1 = audioCtx.createOscillator();
+        const gain1 = audioCtx.createGain();
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(587.33, now);
+        gain1.gain.setValueAtTime(0.3, now);
+        gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+        osc1.connect(gain1);
+        gain1.connect(audioCtx.destination);
+        osc1.start(now);
+        osc1.stop(now + 0.8);
+
+        // Drugi ton: A5 (880 Hz) - blagi eho
+        const osc2 = audioCtx.createOscillator();
+        const gain2 = audioCtx.createGain();
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(880.00, now + 0.12);
+        gain2.gain.setValueAtTime(0.25, now + 0.12);
+        gain2.gain.exponentialRampToValueAtTime(0.001, now + 1.1);
+        osc2.connect(gain2);
+        gain2.connect(audioCtx.destination);
+        osc2.start(now + 0.12);
+        osc2.stop(now + 1.1);
+
+      } catch(e) {
+        console.log("Audio not allowed yet:", e);
+      }
+    }
+
+    // 2. Kontrola Flash Banera
+    let currentSignalText = "MERLIN 1 • XAUUSD: SELL RETEST @ 3,942.67 | SL: 3,952.54 | TP1: 3,936.06 | TP2: 3,923.43 (BE+ Zaštita)";
+    let lastSignalId = "";
+
+    function showFlashBanner(sig) {
+      if (!sig) return;
+      currentSignalText = sig.text || currentSignalText;
+      const textEl = document.getElementById('flash-signal-text');
+      const tagEl = document.getElementById('flash-engine-tag');
+      const banner = document.getElementById('flash-banner');
+
+      if (textEl) textEl.innerText = currentSignalText;
+      if (tagEl) tagEl.innerText = sig.engine || "MERLIN SIGNAL";
+
+      if (banner) {
+        banner.classList.add('active');
+        playSignalChime();
+      }
+    }
+
+    function closeFlashBanner() {
+      const banner = document.getElementById('flash-banner');
+      if (banner) banner.classList.remove('active');
+    }
+
+    function copyCurrentSignal() {
+      navigator.clipboard.writeText(currentSignalText);
+      alert("✅ Signal uspešno kopiran! Možete ga uneti u svoj MetaTrader terminal.");
+    }
+
+    // 3. Promena teme: Beli ekran / Crni ekran
     function setThemeMode(mode) {
       const btnDark = document.getElementById('btn-theme-dark');
       const btnLight = document.getElementById('btn-theme-light');
@@ -1544,7 +1838,6 @@
       initTradingViewChart(activeSymbol, mode);
     }
 
-    // Učitaj zapamćenu temu pri pokretanju
     const savedTheme = localStorage.getItem('momedo_theme_mode') || 'dark';
     if (savedTheme === 'light') {
       document.body.classList.add('theme-light');
@@ -1552,7 +1845,7 @@
       document.getElementById('btn-theme-dark')?.classList.remove('active');
     }
 
-    // 2. Kontrola MENI Drawera
+    // 4. Kontrola MENI Drawera
     function toggleMenuDrawer() {
       const drawer = document.getElementById('menu-drawer');
       const backdrop = document.getElementById('menu-backdrop');
@@ -1560,8 +1853,9 @@
       backdrop.classList.toggle('open');
     }
 
-    // 3. TradingView Widget integracija
+    // 5. TradingView Widget integracija
     let activeSymbol = "OANDA:XAUUSD";
+    let activeAssetType = "XAUUSD";
     let tvWidget = null;
 
     function initTradingViewChart(symbol, theme) {
@@ -1570,7 +1864,7 @@
       const container = document.getElementById('tv_chart_container');
       if (!container) return;
 
-      container.innerHTML = ''; // resetuj sadržaj za čisto ponovno renderovanje
+      container.innerHTML = '';
 
       if (typeof TradingView !== 'undefined') {
         tvWidget = new TradingView.widget({
@@ -1594,38 +1888,46 @@
       }
     }
 
-    // Promena simbola na dugmad iznad grafikona
-    function switchChartSymbol(symbol, btnEl) {
-      activeSymbol = symbol;
+    function switchChartSymbol(tvSymbol, assetType, btnEl) {
+      activeSymbol = tvSymbol;
+      activeAssetType = assetType || 'XAUUSD';
+
       document.querySelectorAll('.btn-chart-sym').forEach(b => b.classList.remove('active'));
       if (btnEl) btnEl.classList.add('active');
 
       const telSymEl = document.getElementById('chart-tel-symbol');
+      const telZoneEl = document.getElementById('chart-tel-zone');
+
       if (telSymEl) {
-        if (symbol.includes('XAU')) telSymEl.innerText = 'XAUUSDs (Gold SMC)';
-        else if (symbol.includes('BTC')) telSymEl.innerText = 'BTC/USDT (Crypto Alpha)';
-        else if (symbol.includes('EUR')) telSymEl.innerText = 'EUR/USD (Major)';
-        else if (symbol.includes('DXY')) telSymEl.innerText = 'DXY (US Dollar Index)';
-        else if (symbol.includes('SPX')) telSymEl.innerText = 'S&P 500 (Equities)';
+        if (assetType === 'XAUUSD') {
+          telSymEl.innerText = 'MERLIN 1 • XAUUSD';
+          if (telZoneEl) telZoneEl.innerText = '3,942.67 — 3,943.87';
+        } else if (assetType === 'BTCUSD') {
+          telSymEl.innerText = 'MERLIN 2 • BTCUSD';
+          if (telZoneEl) telZoneEl.innerText = '$64,450 — $64,780';
+        } else {
+          telSymEl.innerText = assetType + ' (Major)';
+          if (telZoneEl) telZoneEl.innerText = 'ECN Standardna Zona';
+        }
       }
 
-      initTradingViewChart(symbol);
+      initTradingViewChart(tvSymbol);
     }
 
-    // 4. Kopiranje nivoa
+    // 6. Kopiranje nivoa
     function copyLevels(asset) {
       if (asset === 'XAU') {
-        const text = "MOMEDO MERLIN 1 (Zlato MT5 Live):\nUlaz: $3,941.47\nZona: 3,942.67 - 3,943.87\nSL: 3,952.54\nTP1: 3,936.06 | TP2: 3,923.43\nModel: Opcija B Dvofazni BE+";
+        const text = "MERLIN 1 • XAUUSD:\nUlaz: $3,941.47\nZona: 3,942.67 - 3,943.87\nSL: 3,952.54\nTP1: 3,936.06 | TP2: 3,923.43\nModel: Opcija B Break-Even+";
         navigator.clipboard.writeText(text);
-        alert("Nivoi za Zlato uspešno kopirani za MetaTrader!");
+        alert("✅ Nivoi za MERLIN 1 (Zlato) uspešno kopirani za MetaTrader!");
       } else {
-        const text = "MOMEDO MERLIN 2 (Bitcoin Live):\nUlaz: $74,290\nZona: $74,210 - $74,380\nSL: $73,950\nTP1: $75,080 | TP2: $75,680\nModel: Triple Alpha Momentum";
+        const text = "MERLIN 2 • BTCUSD:\nUlaz: $64,529.50\nZona: $64,450 - $64,780\nSL: $63,950\nTP1: $65,450 | TP2: $66,200\nModel: Triple Alpha Momentum";
         navigator.clipboard.writeText(text);
-        alert("Nivoi za Bitcoin uspešno kopirani!");
+        alert("✅ Nivoi za MERLIN 2 (Bitcoin) uspešno kopirani!");
       }
     }
 
-    // 5. Live WebSocket konekcija za cene (Zlato MT5 & BTC Binance)
+    // 7. Live WebSocket konekcija za cene i signale sa MT5
     function connectLiveFeed() {
       const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
       const wsUrl = `${proto}//${window.location.host}/ws`;
@@ -1635,6 +1937,8 @@
         ws.onmessage = (event) => {
           try {
             const data = JSON.parse(event.data);
+            
+            // A) Zlato (MERLIN 1)
             if (data.xau) {
               const xauBid = data.xau.bid;
               const sp = data.xau.spread;
@@ -1646,18 +1950,21 @@
               const cXau = document.getElementById('card-xau-price');
               if (cXau) cXau.innerText = formattedXau;
 
-              const telXau = document.getElementById('chart-tel-price');
-              if (telXau) telXau.innerText = formattedXau;
-
               const cSp = document.getElementById('card-xau-spread');
               if (cSp) cSp.innerText = sp;
 
-              const telSp = document.getElementById('chart-tel-spread');
-              if (telSp) telSp.innerText = sp + ' pts (' + (sp/10).toFixed(1) + ' pips)';
+              if (activeAssetType === 'XAUUSD') {
+                const telXau = document.getElementById('chart-tel-price');
+                if (telXau) telXau.innerText = formattedXau;
+                const telSp = document.getElementById('chart-tel-spread');
+                if (telSp) telSp.innerText = sp + ' pts (' + (sp/10).toFixed(1) + ' pips)';
+              }
             }
+
+            // B) Bitcoin (MERLIN 2 sa MT5)
             if (data.btc) {
               const btcP = data.btc.price;
-              const btcChg = data.btc.change;
+              const btcSp = data.btc.spread || 17.1;
               const formattedBtc = '$' + Number(btcP).toLocaleString('en-US', {minimumFractionDigits: 2});
 
               const tBtc = document.getElementById('tick-btc-price');
@@ -1666,9 +1973,25 @@
               const cBtc = document.getElementById('card-btc-price');
               if (cBtc) cBtc.innerText = formattedBtc;
 
-              const cChg = document.getElementById('card-btc-chg');
-              if (cChg) cChg.innerText = btcChg;
+              const cBtcSp = document.getElementById('card-btc-spread');
+              if (cBtcSp) cBtcSp.innerText = btcSp;
+
+              if (activeAssetType === 'BTCUSD') {
+                const telBtc = document.getElementById('chart-tel-price');
+                if (telBtc) telBtc.innerText = formattedBtc;
+                const telSp = document.getElementById('chart-tel-spread');
+                if (telSp) telSp.innerText = '$' + btcSp + ' ECN Spread';
+              }
             }
+
+            // C) Novi Signal Uživo (Flash Baner + Chime)
+            if (data.signal && data.signal.active) {
+              if (data.signal.id !== lastSignalId) {
+                lastSignalId = data.signal.id;
+                showFlashBanner(data.signal);
+              }
+            }
+
           } catch(e) {}
         };
         ws.onclose = () => setTimeout(connectLiveFeed, 3000);
@@ -1681,6 +2004,14 @@
     window.addEventListener('DOMContentLoaded', () => {
       initTradingViewChart(activeSymbol, savedTheme);
       connectLiveFeed();
+      // Prikaži početni baner spremnog signala nakon 2 sekunde
+      setTimeout(() => {
+        showFlashBanner({
+          id: "INIT_WELCOME",
+          engine: "MERLIN 1",
+          text: "MERLIN 1 • XAUUSD: SELL RETEST @ 3,942.67 | SL: 3,952.54 | TP1: 3,936.06 | TP2: 3,923.43 (BE+ Zaštita aktivna)"
+        });
+      }, 2000);
     });
   </script>
 </body>

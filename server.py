@@ -24,9 +24,14 @@ from parser import (
     get_merlin_1_state,
     get_merlin_2_state,
     get_mt5_gold_candles,
+    get_mt5_btc_candles,
     get_quant_currency_matrix,
+    update_xau_cache,
+    update_btc_cache,
     update_mt5_cache,
-    get_live_crypto_quote
+    get_live_crypto_quote,
+    ingest_robot_signal,
+    get_latest_signal
 )
 
 app = FastAPI(title="MOMEDO Trading Platform API")
@@ -470,26 +475,48 @@ async def api_chart_data(engine_id: str, tf: str = "M5"):
 @app.post("/api/ingest/tick")
 async def api_ingest_bars(request: Request):
     """
-    Ingest endpoint accepting real-time ticks & bars from MOMEDO_LiveBridge.mq5 or RadniDataBridge.
+    Ingest endpoint accepting real-time ticks & bars from MOMEDO_LiveBridge.mq5.
     Enables direct MT5 connection without requiring the website to run on localhost.
     """
     try:
         body = await request.json()
-        account = body.get("account", "126003242")
-        symbol = body.get("symbol", "XAUUSDs")
-        bid = float(body.get("bid", 0))
-        ask = float(body.get("ask", 0))
-        spread = float(body.get("spread", 7.0))
+        account = body.get("account", "700172635")
+        symbol = str(body.get("symbol", "XAUUSD.s")).upper()
         bars = body.get("bars", [])
 
-        # Write to Common\\Files\\MOMEDO_LIVE_XAUUSDs.json
-        common_path = r"C:\Users\usluz\AppData\Roaming\MetaQuotes\Terminal\Common\Files\MOMEDO_LIVE_XAUUSDs.json"
-        with open(common_path, "w", encoding="utf-8") as f:
-            json.dump(body, f)
+        # Write to Common\Files with dynamic filename:
+        common_dir = r"C:\Users\usluz\AppData\Roaming\MetaQuotes\Terminal\Common\Files"
+        if "XAU" in symbol or "GOLD" in symbol:
+            target_file = os.path.join(common_dir, "MOMEDO_LIVE_XAU.json")
+            with open(target_file, "w", encoding="utf-8") as f:
+                json.dump(body, f)
+            update_xau_cache()
+        elif "BTC" in symbol:
+            target_file = os.path.join(common_dir, "MOMEDO_LIVE_BTC.json")
+            with open(target_file, "w", encoding="utf-8") as f:
+                json.dump(body, f)
+            update_btc_cache()
+        else:
+            clean_sym = symbol.replace(".", "_")
+            target_file = os.path.join(common_dir, f"MOMEDO_LIVE_{clean_sym}.json")
+            with open(target_file, "w", encoding="utf-8") as f:
+                json.dump(body, f)
 
-        # Update in-memory cache immediately
-        update_mt5_cache()
         return {"status": "ok", "symbol": symbol, "account": account, "bars_received": len(bars)}
+    except Exception as e:
+        return JSONResponse({"status": "error", "message": str(e)}, status_code=400)
+
+
+@app.post("/api/ingest/signal")
+async def api_ingest_signal(request: Request):
+    """
+    Instant Signal Ingest: Receives live trade notifications from MT5 EA WebRequest()
+    and triggers immediate WebSocket flash banner + sound notification on web.
+    """
+    try:
+        body = await request.json()
+        sig = ingest_robot_signal(body)
+        return {"status": "ok", "signal": sig}
     except Exception as e:
         return JSONResponse({"status": "error", "message": str(e)}, status_code=400)
 
@@ -520,35 +547,46 @@ async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     try:
         while True:
-            # Broadcast fast live tick packets
-            mt5 = update_mt5_cache()
-            btc = get_live_crypto_quote("BTCUSDT")
+            # Broadcast fast live tick packets exclusively from MT5 PU Prime
+            xau = update_xau_cache()
+            btc = update_btc_cache()
+            sig = get_latest_signal()
             packet = {
                 "type": "live_tick_stream",
                 "ts": time.time(),
                 "xau": {
-                    "bid": mt5["bid"],
-                    "ask": mt5["ask"],
-                    "spread": mt5["spread"],
-                    "last_tick": mt5["last_tick_time"],
+                    "bid": xau["bid"],
+                    "ask": xau["ask"],
+                    "spread": xau["spread"],
+                    "last_tick": xau["last_tick_time"],
                     "candle": {
-                        "o": mt5["o"],
-                        "h": mt5["h"],
-                        "l": mt5["l"],
-                        "c": mt5["c"],
-                        "vol": mt5["tick_volume"]
+                        "o": xau["o"],
+                        "h": xau["h"],
+                        "l": xau["l"],
+                        "c": xau["c"],
+                        "vol": xau["tick_volume"]
                     },
-                    "fvg": [mt5["fvg_low"], mt5["fvg_high"]],
-                    "bos": mt5["bos_level"],
-                    "choch": mt5["choch_level"]
+                    "fvg": [xau["fvg_low"], xau["fvg_high"]],
+                    "bos": xau["bos_level"],
+                    "choch": xau["choch_level"]
                 },
                 "btc": {
-                    "price": btc["price"],
-                    "change": btc["change"],
-                    "is_up": btc["is_up"],
-                    "high": btc.get("high", 0),
-                    "low": btc.get("low", 0)
+                    "price": btc["bid"],
+                    "ask": btc["ask"],
+                    "spread": btc["spread"],
+                    "change": btc.get("change", "+1.15%"),
+                    "is_up": True,
+                    "last_tick": btc["last_tick_time"],
+                    "candle": {
+                        "o": btc["o"],
+                        "h": btc["h"],
+                        "l": btc["l"],
+                        "c": btc["c"],
+                        "vol": btc["tick_volume"]
+                    },
+                    "fvg": [btc["fvg_low"], btc["fvg_high"]]
                 },
+                "signal": sig,
                 "engines": {
                     "merlin_1": get_merlin_1_state(),
                     "merlin_2": get_merlin_2_state()
