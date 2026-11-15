@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>MOMEDO Platform | Koyfin Terminal Edition</title>
+  <link rel="stylesheet" href="/static/style.css?v=12.0">
+</head>
+<body id="theme-body" class="theme-profi-quant">
+
+  <!-- ==========================================
+       PLIVAJUĆA TRAKA 1: GLOBALNE CENE SA BERZE
+       (Kretanje sa LEVA na DESNO • Normalna brzina)
+       ========================================== -->
+  <div class="ticker-strip-top strip-prices">
+    <div class="marquee-track-ltr speed-normal" id="market-ticker-track">
+      <!-- Injected by JavaScript -->
+    </div>
+  </div>
+
+  <!-- ==========================================
+       PLIVAJUĆA TRAKA 2: INDIKATORI I TELEMETRIJA
+       (Kretanje sa LEVA na DESNO • Sporija brzina)
+       ========================================== -->
+  <div class="ticker-strip-top strip-indicators">
+    <div class="marquee-track-ltr speed-slow" id="indicator-ticker-track">
+      <!-- Injected by JavaScript -->
+    </div>
+  </div>
+
+  <!-- ==========================================
+       KOYFIN SHELL CONTAINER
+       Left Rail (Dark) + Main Dashboard + Right Rail (Dark)
+       ========================================== -->
+  <div class="koyfin-shell">
+
+
+    <!-- 1. LEVI SLIM NAVIGATION RAIL (KOYFIN IDENTIČAN) -->
+    <aside class="k-left-rail">
+      <div class="k-rail-brand">
+        <img src="/static/momedo_icon.png" class="k-brand-logo" alt="MOMEDO" onerror="this.innerText='M'">
+      </div>
+
+      <nav class="k-rail-nav">
+        <button class="k-rail-item active" id="rail-btn-overview" title="Glavni Terminal" onclick="navigateToPage('overview')">
+          <span class="k-icon">📊</span>
+          <span class="k-tip">Terminal</span>
+        </button>
+        <button class="k-rail-item" id="rail-btn-merlin1" title="Merlin 1 (Zlato MT5)" onclick="navigateToPage('merlin1')">
+          <span class="k-icon">👑</span>
+          <span class="k-tip">Merlin 1 (Zlato)</span>
+        </button>
+        <button class="k-rail-item" id="rail-btn-merlin2" title="Merlin 2 (Bitcoin Live)" onclick="navigateToPage('merlin2')">
+          <span class="k-icon">⚡</span>
+          <span class="k-tip">Merlin 2 (BTC)</span>
+        </button>
+        <button class="k-rail-item" id="rail-btn-news" title="Forex Factory Vesti & Kalendar" onclick="navigateToPage('news')">
+          <span class="k-icon">📰</span>
+          <span class="k-tip">Vesti</span>
+        </button>
+        <button class="k-rail-item" id="rail-btn-quant" title="Kvantni Radar & Formule" onclick="navigateToPage('quant')">
+          <span class="k-icon">🌐</span>
+          <span class="k-tip">Kvantni Radar</span>
+        </button>
+      </nav>
+
+      <div class="k-rail-footer">
+        <button class="k-rail-item" title="Promeni Temu (Koyfin Light / Grafit / Slate / Oranž)" onclick="cycleTheme()">
+          <span class="k-icon">🎨</span>
+          <span class="k-tip">Tema</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- 2. CENTRALNI KOYFIN WORKSPACE -->
+    <main class="k-workspace">
+
+      <!-- TOP HEADER BAR: Breadcrumbs + Status + Admin HUD -->
+      <header class="k-topbar">
+        <div class="k-topbar-left">
+          <span class="k-crumb-muted">Dashboards</span>
+          <span class="k-crumb-sep">/</span>
+          <span class="k-crumb-active">Market Overview</span>
+          <span class="k-live-badge"><span class="k-pulse-dot"></span> LIVE FEED</span>
+        </div>
+
+        <div class="k-topbar-center">
+          <div class="page-nav-pill-bar">
+            <button class="k-page-tab active" id="nav-btn-overview" onclick="navigateToPage('overview')">📊 TERMINAL</button>
+            <button class="k-page-tab" id="nav-btn-merlin1" onclick="navigateToPage('merlin1')">👑 MERLIN 1 (ZLATO MT5)</button>
+            <button class="k-page-tab" id="nav-btn-merlin2" onclick="navigateToPage('merlin2')">⚡ MERLIN 2 (BITCOIN LIVE)</button>
+            <button class="k-page-tab" id="nav-btn-news" onclick="navigateToPage('news')">📰 VESTI & KALENDAR</button>
+            <button class="k-page-tab" id="nav-btn-quant" onclick="navigateToPage('quant')">🌐 KVANTNI RADAR</button>
+            <a href="/promo" class="k-page-tab" style="color:#ffd700; border:1px solid rgba(255,215,0,0.4); background:rgba(255,215,0,0.08); text-decoration:none; display:inline-flex; align-items:center; border-radius:6px; font-weight:700;">⭐ PROMO STRANICA</a>
+          </div>
+        </div>
+
+        <div class="k-topbar-right">
+          <!-- ADMIN BROJAČ (VIDLJIV SAMO NA LOKALNOM RAČUNARU) -->
+          <div id="admin-visitor-badge" class="k-admin-badge" style="display:none;">
+            <span>👁️ <strong>Danas:</strong> <span id="admin-visits-today">--</span></span>
+            <span class="k-sep">•</span>
+            <span><strong>Ukupno:</strong> <span id="admin-visits-total">--</span></span>
+            <span class="k-sep">•</span>
+            <span class="k-online-dot"></span><span><strong id="admin-visits-active">3</strong> online</span>
+          </div>
+
+          <div class="k-clock" id="clock">--:--:-- UTC</div>
+        </div>
+      </header>
+
+      <!-- FREEMIUM 72H -> 10 DANA TRIAL BANER -->
+      <div class="k-trial-strip" id="trial-banner">
+        <div class="k-trial-txt">
+          <span>⏳ <strong>MOMEDO VIP PROBA:</strong> <span id="trial-countdown-text">71h : 48m preostalo</span> za potpuni uvid u Merlin signale i nivoe</span>
+        </div>
+        <div class="k-trial-btns">
+          <button class="k-btn-extend" onclick="extendGuestTrial()">🎁 PRODUŽI NA 10 DANA (GOST)</button>
+          <button class="k-btn-toggle-paywall" id="btn-preview-toggle" onclick="togglePaywallPreview()">🔒 ZAKLJUČAJ/OTKLJUČAJ POGLED</button>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           PAGE 1: OVERVIEW (KOYFIN TERMINAL VIEW)
+           ========================================== -->
+      <div id="view-page-overview" class="page-view active">
+      <div class="k-terminal-grid">
+
+        <!-- ==========================================
+             KOLONA 1 (LEVA KOLONA - ~24%)
+             1. U.S. Equity Markets & Major Assets
+             2. U.S. Equity Sectors
+             3. Fixed Income
+             ========================================== -->
+        <div class="k-col k-col-left">
+          
+          <!-- KARTICA 1: U.S. Equity Markets & Assets -->
+          <div class="k-card" id="card-equity-markets">
+            <div class="k-card-header">
+              <span class="k-card-title">U.S. Equity Markets</span>
+              <button class="k-card-popout" title="Prikaži u prvom planu" onclick="toggleCardExpand('card-equity-markets')">⤢</button>
+            </div>
+            <div class="k-table-scroll">
+              <table class="k-table">
+                <thead>
+                  <tr>
+                    <th style="width:26px;"><input type="checkbox" checked onclick="toggleAllAssets(this)"></th>
+                    <th>Major Indices & ETFs</th>
+                    <th class="tar">Price</th>
+                    <th class="tar">Chg</th>
+                    <th class="tar">%</th>
+                  </tr>
+                </thead>
+                <tbody id="table-equity-markets">
+                  <tr onclick="selectAssetForChart('XAUUSD')">
+                    <td><span class="k-badge-sq bg-gold"></span></td>
+                    <td><strong>Merlin 1: XAU/USD</strong></td>
+                    <td class="tar" id="row-xau-price">3,941.47</td>
+                    <td class="tar text-red">-9.40</td>
+                    <td class="tar text-red">-0.24%</td>
+                  </tr>
+                  <tr onclick="selectAssetForChart('BTCUSD')">
+                    <td><span class="k-badge-sq bg-green"></span></td>
+                    <td><strong>Merlin 2: BTC/USD</strong></td>
+                    <td class="tar" id="row-btc-price">73,554.00</td>
+                    <td class="tar text-red">-1,180.00</td>
+                    <td class="tar text-red">-1.58%</td>
+                  </tr>
+                  <tr onclick="selectAssetForChart('NDX')">
+                    <td><span class="k-badge-sq bg-purple"></span></td>
+                    <td>Nasdaq 100</td>
+                    <td class="tar">12,881.79</td>
+                    <td class="tar text-red">-8.75</td>
+                    <td class="tar text-red">-0.1%</td>
+                  </tr>
+                  <tr onclick="selectAssetForChart('SPX')">
+                    <td><span class="k-badge-sq bg-blue"></span></td>
+                    <td>S&P 500</td>
+                    <td class="tar">4,128.73</td>
+                    <td class="tar text-red">-9.26</td>
+                    <td class="tar text-red">-0.2%</td>
+                  </tr>
+                  <tr onclick="selectAssetForChart('INDU')">
+                    <td><span class="k-badge-sq bg-orange"></span></td>
+                    <td>Dow Jones</td>
+                    <td class="tar">32,909.59</td>
+                    <td class="tar text-red">-154.02</td>
+                    <td class="tar text-red">-0.5%</td>
+                  </tr>
+                  <tr>
+                    <td><span class="k-badge-sq bg-slate"></span></td>
+                    <td>Russell 2000</td>
+                    <td class="tar">190.95</td>
+                    <td class="tar text-green">+0.31</td>
+                    <td class="tar text-green">0.2%</td>
+                  </tr>
+                  <tr class="k-subhead-row">
+                    <td colspan="5">Volatility Index</td>
+                  </tr>
+                  <tr>
+                    <td><span class="k-badge-sq bg-slate"></span></td>
+                    <td>CBOE VIX</td>
+                    <td class="tar">23.91</td>
+                    <td class="tar text-green">+0.11</td>
+                    <td class="tar text-green">0.5%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- KARTICA 2: U.S. Equity Sectors -->
+          <div class="k-card" id="card-sectors">
+            <div class="k-card-header">
+              <span class="k-card-title">U.S. Equity Sectors</span>
+              <button class="k-card-popout" title="Prikaži u prvom planu" onclick="toggleCardExpand('card-sectors')">⤢</button>
+            </div>
+            <div class="k-table-scroll">
+              <table class="k-table">
+                <thead>
+                  <tr>
+                    <th style="width:26px;"><input type="checkbox"></th>
+                    <th>S&P Sector ETFs</th>
+                    <th class="tar">Price</th>
+                    <th class="tar">Chg</th>
+                    <th class="tar">%</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Energy</td>
+                    <td class="tar">82.17</td>
+                    <td class="tar text-green">+2.86</td>
+                    <td class="tar text-green">3.6%</td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Materials</td>
+                    <td class="tar">78.68</td>
+                    <td class="tar text-green">+0.77</td>
+                    <td class="tar text-green">1.0%</td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Cons. Discretionary</td>
+                    <td class="tar">163.34</td>
+                    <td class="tar text-green">+0.46</td>
+                    <td class="tar text-green">0.3%</td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Industrials</td>
+                    <td class="tar">97.14</td>
+                    <td class="tar text-green">+0.18</td>
+                    <td class="tar text-green">0.2%</td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Technology</td>
+                    <td class="tar">143.60</td>
+                    <td class="tar text-red">-0.38</td>
+                    <td class="tar text-red">-0.3%</td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Financials</td>
+                    <td class="tar">34.05</td>
+                    <td class="tar text-red">-0.14</td>
+                    <td class="tar text-red">-0.4%</td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Cons. Staples</td>
+                    <td class="tar">75.80</td>
+                    <td class="tar text-red">-0.33</td>
+                    <td class="tar text-red">-0.4%</td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Utilities</td>
+                    <td class="tar">76.18</td>
+                    <td class="tar text-red">-0.46</td>
+                    <td class="tar text-red">-0.6%</td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Communications</td>
+                    <td class="tar">55.56</td>
+                    <td class="tar text-red">-0.48</td>
+                    <td class="tar text-red">-0.9%</td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Health Care</td>
+                    <td class="tar">129.35</td>
+                    <td class="tar text-red">-1.83</td>
+                    <td class="tar text-red">-1.4%</td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Real Estate</td>
+                    <td class="tar">43.09</td>
+                    <td class="tar text-red">-0.66</td>
+                    <td class="tar text-red">-1.5%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- KARTICA 3: Fixed Income -->
+          <div class="k-card" id="card-fixed-income">
+            <div class="k-card-header">
+              <span class="k-card-title">Fixed Income</span>
+              <button class="k-card-popout" title="Prikaži u prvom planu" onclick="toggleCardExpand('card-fixed-income')">⤢</button>
+            </div>
+            <div class="k-table-scroll">
+              <table class="k-table">
+                <thead>
+                  <tr>
+                    <th style="width:26px;"><input type="checkbox"></th>
+                    <th>Govt Credit ETFs</th>
+                    <th class="tar">Price</th>
+                    <th class="tar">Chg</th>
+                    <th class="tar">%</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>T.I.P.S</td>
+                    <td class="tar">115.41</td>
+                    <td class="tar text-green">+0.19</td>
+                    <td class="tar text-green">0.2%</td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Municipals</td>
+                    <td class="tar">106.50</td>
+                    <td class="tar text-red">-0.13</td>
+                    <td class="tar text-red">-0.1%</td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>U.S. Treasuries</td>
+                    <td class="tar">23.71</td>
+                    <td class="tar text-red">-0.03</td>
+                    <td class="tar text-red">-0.1%</td>
+                  </tr>
+                  <tr class="k-subhead-row">
+                    <td colspan="5">Corp Credit ETFs</td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Convertibles</td>
+                    <td class="tar">68.94</td>
+                    <td class="tar text-green">+0.25</td>
+                    <td class="tar text-green">0.4%</td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>High Yield</td>
+                    <td class="tar">76.27</td>
+                    <td class="tar text-green">+0.19</td>
+                    <td class="tar text-green">0.2%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ==========================================
+             KOLONA 2 (CENTRALNA KOLONA - ~48%)
+             1. Market News (Top)
+             2. Normalized Performance (TradingView Live Chart)
+             3. US Equity Factors (Heatmap) + Global Yields (Side by side)
+             ========================================== -->
+        <div class="k-col k-col-center">
+
+          <!-- KARTICA 4: Market News -->
+          <div class="k-card k-card-news" id="card-news">
+            <div class="k-card-header">
+              <span class="k-card-title">Market News</span>
+              <button class="k-card-popout" title="Prikaži u prvom planu" onclick="toggleCardExpand('card-news')">⤢</button>
+            </div>
+            <div class="k-news-feed" id="news-feed-container">
+              <div class="k-news-row">
+                <span class="k-news-headline">US Core CPI Inflation Expected at 0.3% — Fed Interest Rate Policy Implication</span>
+                <span class="k-news-meta">Forex Factory &bull; Today 13:30 UTC</span>
+              </div>
+              <div class="k-news-row">
+                <span class="k-news-headline">Bitcoin Sweeps Asian Liquidity Range at $73,400 — Merlin 2 Prepares Pullback Long</span>
+                <span class="k-news-meta">MOMEDO Algo Cloud &bull; 14m ago</span>
+              </div>
+              <div class="k-news-row">
+                <span class="k-news-headline">US Stocks Close Mostly Lower Amid Weak Economic Data as Treasury Yields Drop</span>
+                <span class="k-news-meta">MT Newswires &bull; Aug 23 '22</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- KARTICA 5: MERLIN ALGO & MT5 MULTI-WINDOW TERMINAL -->
+          <div class="k-card k-card-chart" id="card-chart">
+            <div class="k-card-header">
+              <div class="k-chart-header-left">
+                <span class="k-card-title" id="main-chart-title">MERLIN • XAU/USD (Zlato MT5 126003242)</span>
+                <span class="k-live-price-hud" id="main-chart-bidask">3,941.47 / 3,942.17</span>
+
+                <!-- INDIKATOR TOGGLE (Čist MT5 pregled vs SMC Nivoi) -->
+                <button class="k-btn-tool k-btn-indicator-toggle" id="btn-toggle-indicators" onclick="toggleSMCLevels()" title="Uključi ili isključi SMC nivoe i indikatore">
+                  👁️ SMC Nivoi: <strong id="ind-toggle-status">ISKLJUČENO</strong>
+                </button>
+              </div>
+
+              <div class="k-chart-header-right">
+                <!-- MT5 & TRADINGVIEW MULTI-WINDOW GRID SELECTOR -->
+                <div class="k-layout-selector" title="Raspored prozora (kao kod MT5 i TradingView)">
+                  <button class="k-layout-btn active" id="btn-layout-1x1" onclick="setChartLayout('1x1')" title="1x1: Jedan Prozor (Fokus)">🔲 1x1</button>
+                  <button class="k-layout-btn" id="btn-layout-2x1" onclick="setChartLayout('2x1')" title="2x1: Horizontalna Podela (Gore / Dole)">⬒ Horiz</button>
+                  <button class="k-layout-btn" id="btn-layout-1x2" onclick="setChartLayout('1x2')" title="1x2: Vertikalna Podela (Levo / Desno)">⬓ Vert</button>
+                  <button class="k-layout-btn" id="btn-layout-2x2" onclick="setChartLayout('2x2')" title="2x2: Četiri Prozora u Mreži (Merlin 1,2,3,4)">⊞ 2x2</button>
+                </div>
+
+                <!-- Switcher: TradingView Svećice vs Normalized % -->
+                <div class="k-chart-mode-pill">
+                  <button class="k-btn-mode active" id="btn-mode-candle" onclick="setChartDisplayMode('candlestick')">Candles</button>
+                  <button class="k-btn-mode" id="btn-mode-norm" onclick="setChartDisplayMode('normalized')">Norm %</button>
+                </div>
+
+                <button class="k-card-popout" title="Prikaži u prvom planu (Full Focus)" onclick="toggleCardExpand('card-chart')">⤢</button>
+              </div>
+            </div>
+
+            <!-- MT5 STYLE CHART TABS BAR -->
+            <div class="mt5-chart-tabs" id="mt5-tabs-bar">
+              <button class="mt5-tab active" id="tab-merlin" onclick="switchChartEngine('merlin')">
+                <span class="mt5-tab-dot dot-gold"></span>
+                <span>MERLIN (Čisto Zlato)</span>
+              </button>
+              <button class="mt5-tab" id="tab-merlin_1" onclick="switchChartEngine('merlin_1')">
+                <span class="mt5-tab-dot dot-blue"></span>
+                <span>🧙‍♂️ MERLIN 1 (Zlato SMC)</span>
+              </button>
+              <button class="mt5-tab" id="tab-merlin_2" onclick="switchChartEngine('merlin_2')">
+                <span class="mt5-tab-dot dot-green"></span>
+                <span>⚡ MERLIN 2 (Bitcoin Live)</span>
+              </button>
+              <button class="mt5-tab" id="tab-ndx" onclick="switchChartEngine('ndx')">
+                <span class="mt5-tab-dot dot-purple"></span>
+                <span>📊 NASDAQ 100</span>
+              </button>
+              <button class="mt5-tab add-tab" title="Dodaj novi grafikon" onclick="promptAddNewSymbol()">➕ Novi Graf</button>
+            </div>
+
+            <!-- Timeframe & Asset Toolbar -->
+            <div class="k-chart-toolbar">
+              <div class="k-tf-group">
+                <button class="k-tf-btn" onclick="setChartTimeframe('M1')">M1</button>
+                <button class="k-tf-btn active" id="tf-btn-M5" onclick="setChartTimeframe('M5')">M5</button>
+                <button class="k-tf-btn" onclick="setChartTimeframe('M15')">M15</button>
+                <button class="k-tf-btn" onclick="setChartTimeframe('M30')">M30</button>
+                <button class="k-tf-btn" onclick="setChartTimeframe('H1')">H1</button>
+                <button class="k-tf-btn" onclick="setChartTimeframe('H4')">H4</button>
+                <button class="k-tf-btn" onclick="setChartTimeframe('D1')">D1</button>
+              </div>
+
+              <div class="k-asset-pills" id="asset-pills-bar">
+                <span class="k-asset-pill c-gold" onclick="switchChartEngine('merlin')">Merlin (XAU)</span>
+                <span class="k-asset-pill c-blue" onclick="switchChartEngine('merlin_1')">Merlin 1 (SMC)</span>
+                <span class="k-asset-pill c-green" onclick="switchChartEngine('merlin_2')">Merlin 2 (BTC)</span>
+                <span class="k-asset-pill c-purple" onclick="switchChartEngine('ndx')">Nasdaq 100</span>
+              </div>
+            </div>
+
+            <!-- MULTI-WINDOW CHART STAGE -->
+            <div class="k-chart-stage layout-1x1" id="chart-stage">
+              
+              <!-- PROZOR 1 (GLAVNI PROZOR) -->
+              <div class="chart-pane active-pane" id="pane-1" onclick="setActivePane(1)">
+                <div class="pane-header">
+                  <span class="pane-title" id="pane-1-title">MERLIN • XAU/USD (MT5 Live 126003242)</span>
+                  <div class="pane-meta">
+                    <span class="pane-bidask" id="pane-1-bidask">3,941.47 / 3,942.17</span>
+                    <span class="pane-spread" id="pane-1-spread">7 pts</span>
+                    <button class="pane-btn-max" title="Maksimizuj ovaj prozor" onclick="maximizePane(1); event.stopPropagation();">🗖</button>
+                  </div>
+                </div>
+                <div class="pane-canvas-wrap">
+                  <div class="k-chart-ohlc-hud" id="pane-1-hud">
+                    <span id="hud-asset-name">XAU/USDs (Zlato MT5)</span>
+                    <span>O: <strong id="hud-open">3,944.89</strong></span>
+                    <span>H: <strong id="hud-high">3,946.69</strong></span>
+                    <span>L: <strong id="hud-low">3,941.47</strong></span>
+                    <span>C: <strong id="hud-close">3,941.47</strong></span>
+                    <span id="hud-chg" style="color:#ff3366; font-weight:800;">-0.24%</span>
+                  </div>
+                  <canvas id="canvas-pane-1"></canvas>
+                </div>
+              </div>
+
+              <!-- PROZOR 2 (HORIZONTALA / VERTIKALA) -->
+              <div class="chart-pane" id="pane-2" onclick="setActivePane(2)" style="display:none;">
+                <div class="pane-header">
+                  <span class="pane-title" id="pane-2-title">MERLIN 2 • BTC/USD Live</span>
+                  <div class="pane-meta">
+                    <span class="pane-bidask" id="pane-2-bidask">73,554.00</span>
+                    <span class="pane-spread" id="pane-2-spread">1.5 pts</span>
+                    <button class="pane-btn-max" title="Maksimizuj ovaj prozor" onclick="maximizePane(2); event.stopPropagation();">🗖</button>
+                  </div>
+                </div>
+                <div class="pane-canvas-wrap">
+                  <canvas id="canvas-pane-2"></canvas>
+                </div>
+              </div>
+
+              <!-- PROZOR 3 (2x2 MREŽA) -->
+              <div class="chart-pane" id="pane-3" onclick="setActivePane(3)" style="display:none;">
+                <div class="pane-header">
+                  <span class="pane-title" id="pane-3-title">NASDAQ 100</span>
+                  <div class="pane-meta">
+                    <span class="pane-bidask" id="pane-3-bidask">12,881.79</span>
+                    <button class="pane-btn-max" title="Maksimizuj ovaj prozor" onclick="maximizePane(3); event.stopPropagation();">🗖</button>
+                  </div>
+                </div>
+                <div class="pane-canvas-wrap">
+                  <canvas id="canvas-pane-3"></canvas>
+                </div>
+              </div>
+
+              <!-- PROZOR 4 (2x2 MREŽA) -->
+              <div class="chart-pane" id="pane-4" onclick="setActivePane(4)" style="display:none;">
+                <div class="pane-header">
+                  <span class="pane-title" id="pane-4-title">ETH/USD (Ethereum)</span>
+                  <div class="pane-meta">
+                    <span class="pane-bidask" id="pane-4-bidask">2,040.63</span>
+                    <button class="pane-btn-max" title="Maksimizuj ovaj prozor" onclick="maximizePane(4); event.stopPropagation();">🗖</button>
+                  </div>
+                </div>
+                <div class="pane-canvas-wrap">
+                  <canvas id="canvas-pane-4"></canvas>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Bottom Chart Mini Tools -->
+            <div class="k-chart-bottom-bar">
+              <div class="k-dates-axis" id="dates-axis-strip">
+                <span>M5 Bar 1</span>
+                <span>M5 Bar 15</span>
+                <span>M5 Bar 30</span>
+                <span>M5 Bar 50</span>
+                <span>M5 Berzanski Uživo</span>
+              </div>
+              <div class="k-chart-actions-right">
+                <button title="Ukrštene linije (Crosshair)">➕</button>
+                <button title="Podesi skalu">📐</button>
+                <button title="Preuzmi sliku grafikona">📷</button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- KARTICA 6 & 7: US Equity Factors (Heatmap) + Global Yields (Split 50/50) -->
+          <div class="k-split-row">
+            
+            <!-- 6. US Equity Factors (Heatmap) -->
+            <div class="k-card k-card-factors" id="card-factors">
+              <div class="k-card-header">
+                <span class="k-card-title">US Equity Factors & MTF</span>
+                <button class="k-card-popout" title="Prikaži u prvom planu" onclick="toggleCardExpand('card-factors')">⤢</button>
+              </div>
+              <div class="k-factors-body">
+                <div class="k-factor-sub">1-Day Performance / MTF Matrica</div>
+                <table class="k-heatmap-table">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Value</th>
+                      <th>Core</th>
+                      <th>Growth</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="k-heat-row-lbl">Large</td>
+                      <td class="heat-box heat-red">-0.2%</td>
+                      <td class="heat-box heat-red">-0.2%</td>
+                      <td class="heat-box heat-red">-0.3%</td>
+                    </tr>
+                    <tr>
+                      <td class="k-heat-row-lbl">Mid</td>
+                      <td class="heat-box heat-red">-0.2%</td>
+                      <td class="heat-box heat-neutral">0.0%</td>
+                      <td class="heat-box heat-green">+0.1%</td>
+                    </tr>
+                    <tr>
+                      <td class="k-heat-row-lbl">Merlin</td>
+                      <td class="heat-box heat-green">BUY</td>
+                      <td class="heat-box heat-green">BUY</td>
+                      <td class="heat-box heat-gold">WAIT</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 7. Global Yields & Sessions -->
+            <div class="k-card k-card-yields" id="card-yields">
+              <div class="k-card-header">
+                <span class="k-card-title">Global Yields & Sessions</span>
+                <button class="k-card-popout" title="Prikaži u prvom planu" onclick="toggleCardExpand('card-yields')">⤢</button>
+              </div>
+              <div class="k-table-scroll">
+                <table class="k-table">
+                  <thead>
+                    <tr>
+                      <th>Country / Hub</th>
+                      <th class="tar">5Y / Status</th>
+                      <th class="tar">10Y / Time</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><span class="k-flag">🇺🇸</span> United States (NY)</td>
+                      <td class="tar text-green"><strong>OPEN</strong></td>
+                      <td class="tar">3.054%</td>
+                    </tr>
+                    <tr>
+                      <td><span class="k-flag">🇩🇪</span> Germany (Frankfurt)</td>
+                      <td class="tar text-muted">CLOSED</td>
+                      <td class="tar">1.321%</td>
+                    </tr>
+                    <tr>
+                      <td><span class="k-flag">🇬🇧</span> United Kingdom (LDN)</td>
+                      <td class="tar text-muted">CLOSED</td>
+                      <td class="tar">2.577%</td>
+                    </tr>
+                    <tr>
+                      <td><span class="k-flag">🇪🇸</span> Spain</td>
+                      <td class="tar">1.774%</td>
+                      <td class="tar">2.508%</td>
+                    </tr>
+                    <tr>
+                      <td><span class="k-flag">🇮🇹</span> Italy</td>
+                      <td class="tar">2.734%</td>
+                      <td class="tar">3.641%</td>
+                    </tr>
+                    <tr>
+                      <td><span class="k-flag">🇯🇵</span> Japan (Tokyo)</td>
+                      <td class="tar text-muted">CLOSED</td>
+                      <td class="tar">0.214%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- ==========================================
+             KOLONA 3 (DESNA KOLONA - ~28%)
+             1. Currencies (USD FX Crosses)
+             2. Global Markets / Merlin Execution Order Ticket
+             3. Commodities
+             ========================================== -->
+        <div class="k-col k-col-right">
+
+          <!-- KARTICA 8: Currencies -->
+          <div class="k-card" id="card-currencies">
+            <div class="k-card-header">
+              <span class="k-card-title">Currencies</span>
+              <button class="k-card-popout" title="Prikaži u prvom planu" onclick="toggleCardExpand('card-currencies')">⤢</button>
+            </div>
+            <div class="k-table-scroll">
+              <table class="k-table">
+                <thead>
+                  <tr>
+                    <th style="width:26px;"><input type="checkbox"></th>
+                    <th>USD FX Crosses</th>
+                    <th class="tar">Price</th>
+                    <th class="tar">Chg</th>
+                    <th class="tar">%</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr onclick="selectAssetForChart('GBPUSD')">
+                    <td><input type="checkbox"></td>
+                    <td>British Pound</td>
+                    <td class="tar">1.1825</td>
+                    <td class="tar text-red">-0.0005</td>
+                    <td class="tar text-red">0.0%</td>
+                  </tr>
+                  <tr onclick="selectAssetForChart('USDJPY')">
+                    <td><input type="checkbox"></td>
+                    <td>Japanese Yen</td>
+                    <td class="tar">136.6875</td>
+                    <td class="tar text-red">-0.0715</td>
+                    <td class="tar text-red">-0.1%</td>
+                  </tr>
+                  <tr onclick="selectAssetForChart('EURUSD')">
+                    <td><input type="checkbox"></td>
+                    <td>Euro</td>
+                    <td class="tar">0.9952</td>
+                    <td class="tar text-red">-0.0016</td>
+                    <td class="tar text-red">-0.2%</td>
+                  </tr>
+                  <tr onclick="selectAssetForChart('BTCUSD')">
+                    <td><input type="checkbox" checked></td>
+                    <td><strong>Bitcoin (Live)</strong></td>
+                    <td class="tar text-bold" id="row-btc-cur-price">73,554.00</td>
+                    <td class="tar text-red">-132.13</td>
+                    <td class="tar text-red">-0.6%</td>
+                  </tr>
+                  <tr onclick="selectAssetForChart('ETHUSD')">
+                    <td><input type="checkbox"></td>
+                    <td>Ethereum (Live)</td>
+                    <td class="tar" id="row-eth-cur-price">2,040.63</td>
+                    <td class="tar text-red">-85.10</td>
+                    <td class="tar text-red">-4.0%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- KARTICA 9: Global Markets & Merlin Execution Ticket -->
+          <div class="k-card k-card-ticket" id="card-global-markets">
+            <div class="k-card-header">
+              <div class="k-tab-toggle">
+                <button class="k-sub-tab active" id="tab-gm-ticket" onclick="switchRightPanelTab('ticket')">Merlin Nalog</button>
+                <button class="k-sub-tab" id="tab-gm-markets" onclick="switchRightPanelTab('markets')">Global Markets</button>
+              </div>
+              <button class="k-card-popout" title="Prikaži u prvom planu" onclick="toggleCardExpand('card-global-markets')">⤢</button>
+            </div>
+
+            <!-- VIEW A: EKSEKUCIONI TIKET (COINBASE / ROBINHOOD JEDNOSTAVNOST) -->
+            <div class="k-ticket-body" id="view-ticket">
+              
+              <!-- SOFT PAYWALL LOCK OVERLAY -->
+              <div class="k-vip-overlay" id="vip-lock-overlay" style="display:none;">
+                <div class="k-vip-box">
+                  <span class="k-lock-ico">🔒</span>
+                  <h4>MERLIN DIREKTIVA ZAKLJUČANA</h4>
+                  <p>Probni period je istekao. Tržišne cene i vesti su slobodne, a tačni nivoi ulaza su rezervisani za VIP članove.</p>
+                  <button class="k-btn-vip-unlock" onclick="alert('Preusmeravanje na VIP registraciju...')">⚡ AKTIVIRAJ VIP ČLANSTVO</button>
+                </div>
+              </div>
+
+              <div class="k-ticket-hero">
+                <span class="k-directive-badge" id="exec-directive-name">BUY LIMIT DIRECTIVE</span>
+                <span class="k-directive-score" id="exec-score-val">84% SCORE</span>
+              </div>
+              <div class="k-ticket-zone" id="exec-setup-zone">SMC Fair Value Gap Retest (4065.04 — 4071.91)</div>
+
+              <!-- 4 ČISTA BROJA -->
+              <div class="k-ticket-grid">
+                <div class="k-t-cell">
+                  <span class="lbl">ULAZ</span>
+                  <span class="val text-blue" id="exec-entry">4,066.48</span>
+                </div>
+                <div class="k-t-cell">
+                  <span class="lbl">STOP LOSS</span>
+                  <span class="val text-red" id="exec-sl">4,058.00</span>
+                </div>
+                <div class="k-t-cell">
+                  <span class="lbl">TAKE PROFIT</span>
+                  <span class="val text-green" id="exec-tp1">4,078.00</span>
+                </div>
+                <div class="k-t-cell">
+                  <span class="lbl">R:R ODNOS</span>
+                  <span class="val text-gold" id="exec-rr">1 : 2.4 RR</span>
+                </div>
+              </div>
+
+              <!-- 1-KLIK KOPIRANJE ZA METATRADER -->
+              <button class="k-btn-copy-ticket" onclick="copyTradingDirective()">
+                <span>📋</span>
+                <span id="btn-copy-label">KOPIRAJ NIVELE ZA METATRADER</span>
+              </button>
+
+              <div class="k-ticket-reason" id="exec-reason">
+                Zlato prilazi zoni M5 FVG retesta. D1 kontekst je u prodaji, ali M30 i H4 pokazuju impuls za intraday skalp kupovinu sa minimalnim rizikom.
+              </div>
+            </div>
+
+            <!-- VIEW B: GLOBAL MARKETS LIST (KOYFIN IDENTIČAN) -->
+            <div class="k-table-scroll" id="view-markets" style="display:none;">
+              <table class="k-table">
+                <thead>
+                  <tr>
+                    <th style="width:26px;"><input type="checkbox"></th>
+                    <th>Broad Markets</th>
+                    <th class="tar">Price</th>
+                    <th class="tar">Chg</th>
+                    <th class="tar">%</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Emerging</td>
+                    <td class="tar">39.76</td>
+                    <td class="tar text-green">+0.21</td>
+                    <td class="tar text-green">0.5%</td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Frontier</td>
+                    <td class="tar">27.61</td>
+                    <td class="tar text-green">+0.07</td>
+                    <td class="tar text-green">0.3%</td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Developed</td>
+                    <td class="tar">63.62</td>
+                    <td class="tar text-green">+0.03</td>
+                    <td class="tar text-green">0.0%</td>
+                  </tr>
+                  <tr class="k-subhead-row">
+                    <td colspan="5">Developed Markets</td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Japan</td>
+                    <td class="tar">55.19</td>
+                    <td class="tar text-green">+0.13</td>
+                    <td class="tar text-green">0.2%</td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Australia</td>
+                    <td class="tar">22.42</td>
+                    <td class="tar text-green">+0.05</td>
+                    <td class="tar text-green">0.2%</td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>United Kingdom</td>
+                    <td class="tar">30.34</td>
+                    <td class="tar text-green">+0.04</td>
+                    <td class="tar text-green">0.1%</td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>France</td>
+                    <td class="tar">30.56</td>
+                    <td class="tar text-green">+0.01</td>
+                    <td class="tar text-green">0.0%</td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Germany</td>
+                    <td class="tar">22.14</td>
+                    <td class="tar text-red">-0.01</td>
+                    <td class="tar text-red">0.0%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+
+          <!-- KARTICA 10: Commodities -->
+          <div class="k-card" id="card-commodities">
+            <div class="k-card-header">
+              <span class="k-card-title">Commodities</span>
+              <button class="k-card-popout" title="Prikaži u prvom planu" onclick="toggleCardExpand('card-commodities')">⤢</button>
+            </div>
+            <div class="k-table-scroll">
+              <table class="k-table">
+                <thead>
+                  <tr>
+                    <th style="width:26px;"><input type="checkbox"></th>
+                    <th>Commodities</th>
+                    <th class="tar">Price</th>
+                    <th class="tar">Chg</th>
+                    <th class="tar">%</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Brent Crude</td>
+                    <td class="tar">100.08</td>
+                    <td class="tar text-green">+3.60</td>
+                    <td class="tar text-green">3.7%</td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Crude Oil</td>
+                    <td class="tar">93.67</td>
+                    <td class="tar text-green">+3.31</td>
+                    <td class="tar text-green">3.7%</td>
+                  </tr>
+                  <tr onclick="selectAssetForChart('XAUUSD')">
+                    <td><input type="checkbox" checked></td>
+                    <td><strong>Gold (XAU/USDs)</strong></td>
+                    <td class="tar text-bold" id="row-gold-com-price">3,941.47</td>
+                    <td class="tar text-red">-9.40</td>
+                    <td class="tar text-red">-0.24%</td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Silver</td>
+                    <td class="tar">19.02</td>
+                    <td class="tar text-red">-0.15</td>
+                    <td class="tar text-red">-0.8%</td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Natural Gas</td>
+                    <td class="tar">9.19</td>
+                    <td class="tar text-green">+0.43</td>
+                    <td class="tar text-green">+4.9%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+      </div>
+      <!-- END PAGE 1: OVERVIEW -->
+
+      <!-- ==========================================
+           PAGE 2: DEDICATED MERLIN 1 (ZLATO XAU/USD)
+           ========================================== -->
+      <div id="view-page-merlin1" class="page-view">
+        <div class="dedicated-page-container">
+          <div class="dedicated-hero-header">
+            <div class="dedicated-hero-left">
+              <img src="/static/wizard_avatar.png" class="hero-avatar-icon" alt="Merlin 1">
+              <div class="dedicated-hero-title">
+                <h2>MERLIN 1 • XAU/USD (Zlato SMC Master) <span class="k-live-badge"><span class="k-pulse-dot"></span> MT5 LIVE DIRECT</span></h2>
+                <div class="dedicated-hero-subtitle">Direktna sinhronizacija sa MetaTrader 5 terminalom u deliću milisekunde • Strategija 6102 XAU Master Demo</div>
+              </div>
+            </div>
+            <div class="dedicated-hero-right">
+              <div class="hero-price-box">
+                <div class="hero-live-price" id="m1-hero-bidask">3,989.96 / 3,990.28</div>
+                <div class="hero-live-sub">Spread: <span id="m1-hero-spread">32 pts</span> &bull; Sesija: <span id="m1-hero-session">London/NY Overlap</span></div>
+              </div>
+              <button class="k-btn-tool k-btn-indicator-toggle" onclick="toggleDedicatedM1Indicators()">
+                👁️ SMC Nivoi: <strong id="m1-ind-status">UKLJUČENO</strong>
+              </button>
+            </div>
+          </div>
+
+          <div class="dedicated-two-col">
+            <!-- Full Height MT5 Canvas Chart -->
+            <div class="dedicated-chart-card">
+              <div class="k-chart-toolbar">
+                <div class="k-tf-group">
+                  <button class="k-tf-btn" onclick="setDedicatedM1TF('M1')">M1</button>
+                  <button class="k-tf-btn active" id="m1-tf-M5" onclick="setDedicatedM1TF('M5')">M5</button>
+                  <button class="k-tf-btn" onclick="setDedicatedM1TF('M15')">M15</button>
+                  <button class="k-tf-btn" onclick="setDedicatedM1TF('M30')">M30</button>
+                  <button class="k-tf-btn" onclick="setDedicatedM1TF('H1')">H1</button>
+                  <button class="k-tf-btn" onclick="setDedicatedM1TF('H4')">H4</button>
+                  <button class="k-tf-btn" onclick="setDedicatedM1TF('D1')">D1</button>
+                </div>
+                <div class="k-live-price-hud">
+                  <span>FVG Zona: <strong style="color:#00f0ff;" id="m1-hud-fvg">3,986.89 — 3,988.26</strong></span>
+                  <span style="margin-left:12px;">BOS Nivo: <strong style="color:#ffd700;" id="m1-hud-bos">3,985.05</strong></span>
+                  <span style="margin-left:12px;">CHOCH: <strong style="color:#ff3366;" id="m1-hud-choch">3,991.64</strong></span>
+                </div>
+              </div>
+              <div class="pane-canvas-wrap" style="flex:1; position:relative; min-height:480px;">
+                <canvas id="canvas-dedicated-merlin1"></canvas>
+              </div>
+            </div>
+
+            <!-- Intelligence Column -->
+            <div class="dedicated-sidebar-cards">
+              <!-- Setup A Card (Replica of Image 2) -->
+              <div class="setup-card-box setup-a">
+                <div class="setup-card-header">
+                  <span class="setup-name">Setup A (SMC Core Expansion)</span>
+                  <span class="setup-badge-pill badge-reliable">Reliable</span>
+                </div>
+                <div class="setup-metric-row">
+                  <span class="setup-metric-lbl">Win Rate</span>
+                  <span class="setup-metric-val">68%</span>
+                </div>
+                <div class="setup-progress-track">
+                  <div class="setup-progress-fill fill-green" style="width: 68%;"></div>
+                </div>
+
+                <div class="setup-metric-row">
+                  <span class="setup-metric-lbl">Profit Equity Curve</span>
+                  <span class="setup-metric-lbl" style="color:#00e676; font-weight:800;">+48.4 R</span>
+                </div>
+                <svg class="setup-profit-curve" viewBox="0 0 200 45">
+                  <path d="M 0,38 Q 40,32 70,25 T 140,15 T 200,6" fill="none" stroke="#00e676" stroke-width="2.5" />
+                  <path d="M 0,38 Q 40,32 70,25 T 140,15 T 200,6 L 200,45 L 0,45 Z" fill="rgba(0, 230, 118, 0.1)" />
+                </svg>
+
+                <div class="wilson-ci-container">
+                  <div class="wilson-ci-header">
+                    <span>Wilson CI (95% Interval)</span>
+                    <span class="wilson-ci-val">58% — 76%</span>
+                  </div>
+                  <div class="wilson-bar">
+                    <div class="wilson-range" style="left:58%; width:18%;"></div>
+                    <div class="wilson-target-dot" style="left:68%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Live Execution Directive -->
+              <div class="setup-card-box">
+                <div class="setup-card-header">
+                  <span class="setup-name">MT5 Eksekucioni Nalog</span>
+                  <span class="setup-badge-pill badge-reliable" id="m1-exec-type">BUY LIMIT</span>
+                </div>
+                <div class="k-ticket-grid">
+                  <div class="k-t-cell"><span class="lbl">ULAZ</span><span class="val text-blue" id="m1-exec-entry">3,986.85</span></div>
+                  <div class="k-t-cell"><span class="lbl">STOP LOSS</span><span class="val text-red" id="m1-exec-sl">3,983.55</span></div>
+                  <div class="k-t-cell"><span class="lbl">TAKE PROFIT</span><span class="val text-green" id="m1-exec-tp1">3,995.50</span></div>
+                  <div class="k-t-cell"><span class="lbl">R:R ODNOS</span><span class="val text-gold">1 : 2.6 RR</span></div>
+                </div>
+                <button class="k-btn-copy-ticket" style="margin-top:12px;" onclick="copyTradingDirective()">
+                  <span>📋</span><span>KOPIRAJ NIVELE ZA METATRADER 5</span>
+                </button>
+              </div>
+
+              <!-- MTF Alignment Matrix -->
+              <div class="setup-card-box">
+                <div class="setup-card-header"><span class="setup-name">MTF Matrica Trenda</span><span style="font-size:11px; color:#94a3b8;">Algoritamski Filter</span></div>
+                <div style="display:grid; grid-template-columns: repeat(6, 1fr); gap:6px; text-align:center; font-size:11px; font-weight:800;">
+                  <div style="background:rgba(255,51,102,0.15); color:#ff3366; padding:6px 2px; border-radius:4px;">M1<br>SELL</div>
+                  <div style="background:rgba(255,170,0,0.15); color:#ffaa00; padding:6px 2px; border-radius:4px;">M5<br>WAIT</div>
+                  <div style="background:rgba(0,230,118,0.15); color:#00e676; padding:6px 2px; border-radius:4px;">M30<br>BUY</div>
+                  <div style="background:rgba(255,51,102,0.15); color:#ff3366; padding:6px 2px; border-radius:4px;">H1<br>SELL</div>
+                  <div style="background:rgba(0,230,118,0.15); color:#00e676; padding:6px 2px; border-radius:4px;">H4<br>BUY</div>
+                  <div style="background:rgba(255,51,102,0.15); color:#ff3366; padding:6px 2px; border-radius:4px;">D1<br>SELL</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           PAGE 3: DEDICATED MERLIN 2 (BITCOIN LIVE)
+           ========================================== -->
+      <div id="view-page-merlin2" class="page-view">
+        <div class="dedicated-page-container">
+          <div class="dedicated-hero-header">
+            <div class="dedicated-hero-left">
+              <span style="font-size:32px;">⚡</span>
+              <div class="dedicated-hero-title">
+                <h2>MERLIN 2 • BTC/USD (Triple Alpha Engine) <span class="k-live-badge"><span class="k-pulse-dot"></span> BINANCE 24/7 LIVE</span></h2>
+                <div class="dedicated-hero-subtitle">Direktno povezan sa Binance WebSocket API u realnom vremenu • Sub-millisecond tick stream</div>
+              </div>
+            </div>
+            <div class="dedicated-hero-right">
+              <div class="hero-price-box">
+                <div class="hero-live-price" id="m2-hero-price">$74,850.00</div>
+                <div class="hero-live-sub">24h Chg: <span id="m2-hero-chg" style="color:#00e676; font-weight:800;">+1.25%</span> &bull; Spread: 1.5 pts</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dedicated-two-col">
+            <!-- Full Height Binance Live Canvas Chart -->
+            <div class="dedicated-chart-card">
+              <div class="k-chart-toolbar">
+                <div class="k-tf-group">
+                  <button class="k-tf-btn" onclick="setDedicatedM2TF('M1')">M1</button>
+                  <button class="k-tf-btn" onclick="setDedicatedM2TF('M5')">M5</button>
+                  <button class="k-tf-btn active" id="m2-tf-M15" onclick="setDedicatedM2TF('M15')">M15</button>
+                  <button class="k-tf-btn" onclick="setDedicatedM2TF('M30')">M30</button>
+                  <button class="k-tf-btn" onclick="setDedicatedM2TF('H1')">H1</button>
+                  <button class="k-tf-btn" onclick="setDedicatedM2TF('H4')">H4</button>
+                </div>
+                <div class="k-live-price-hud">
+                  <span>Asian Sweep: <strong style="color:#00e676;">KOMPLETIRAN</strong></span>
+                  <span style="margin-left:12px;">200 EMA Pullback: <strong style="color:#00f0ff;">BULLISH</strong></span>
+                </div>
+              </div>
+              <div class="pane-canvas-wrap" style="flex:1; position:relative; min-height:480px;">
+                <canvas id="canvas-dedicated-merlin2"></canvas>
+              </div>
+            </div>
+
+            <!-- Intelligence Column -->
+            <div class="dedicated-sidebar-cards">
+              <!-- Setup B Card (Replica of Image 2) -->
+              <div class="setup-card-box setup-b">
+                <div class="setup-card-header">
+                  <span class="setup-name">Setup B (BTC Triple Alpha)</span>
+                  <span class="setup-badge-pill badge-reliable">Reliable</span>
+                </div>
+                <div class="setup-metric-row">
+                  <span class="setup-metric-lbl">Win Rate</span>
+                  <span class="setup-metric-val" style="color:#00e676;">81.2%</span>
+                </div>
+                <div class="setup-progress-track">
+                  <div class="setup-progress-fill fill-green" style="width: 81%;"></div>
+                </div>
+
+                <div class="setup-metric-row">
+                  <span class="setup-metric-lbl">Profit Equity Curve</span>
+                  <span class="setup-metric-lbl" style="color:#00e676; font-weight:800;">+54.8 R</span>
+                </div>
+                <svg class="setup-profit-curve" viewBox="0 0 200 45">
+                  <path d="M 0,38 Q 40,28 75,20 T 150,12 T 200,4" fill="none" stroke="#00e676" stroke-width="2.5" />
+                  <path d="M 0,38 Q 40,28 75,20 T 150,12 T 200,4 L 200,45 L 0,45 Z" fill="rgba(0, 230, 118, 0.1)" />
+                </svg>
+
+                <div class="wilson-ci-container">
+                  <div class="wilson-ci-header">
+                    <span>Wilson CI (95% Interval)</span>
+                    <span class="wilson-ci-val">72% — 88%</span>
+                  </div>
+                  <div class="wilson-bar">
+                    <div class="wilson-range" style="left:72%; width:16%;"></div>
+                    <div class="wilson-target-dot" style="left:81%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Live Execution Directive -->
+              <div class="setup-card-box">
+                <div class="setup-card-header">
+                  <span class="setup-name">Bitcoin Signal Direktiva</span>
+                  <span class="setup-badge-pill badge-reliable">BUY PULLBACK</span>
+                </div>
+                <div class="k-ticket-grid">
+                  <div class="k-t-cell"><span class="lbl">ULAZ</span><span class="val text-blue" id="m2-exec-entry">74,680</span></div>
+                  <div class="k-t-cell"><span class="lbl">STOP LOSS</span><span class="val text-red" id="m2-exec-sl">74,180</span></div>
+                  <div class="k-t-cell"><span class="lbl">TAKE PROFIT</span><span class="val text-green" id="m2-exec-tp1">75,450</span></div>
+                  <div class="k-t-cell"><span class="lbl">R:R ODNOS</span><span class="val text-gold">1 : 2.5 RR</span></div>
+                </div>
+                <button class="k-btn-copy-ticket" style="margin-top:12px;" onclick="copyTradingDirective()">
+                  <span>📋</span><span>KOPIRAJ BITCOIN DIREKTIVU</span>
+                </button>
+              </div>
+
+              <!-- Risk Model -->
+              <div class="setup-card-box">
+                <div class="setup-card-header"><span class="setup-name">Zaštita Kapitala</span><span style="font-size:11px; color:#00f0ff;">Opcija B</span></div>
+                <p style="font-size:12px; color:#cbd5e1; margin:0 0 8px 0; line-height:1.5;">
+                  Stepenasto pomeranje Stop Loss-a: Nakon +0.8R automatski se smanjuje rizik sa -$24 na -$6, a na +1.5R nalog prelazi u BE+ garantovan profit.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           PAGE 4: DEDICATED VESTI & MAKRO KALENDAR
+           ========================================== -->
+      <div id="view-page-news" class="page-view">
+        <div class="dedicated-page-container">
+          <div class="dedicated-hero-header">
+            <div class="dedicated-hero-left">
+              <span style="font-size:32px;">📰</span>
+              <div class="dedicated-hero-title">
+                <h2>FOREX FACTORY & MAKRO EKONOMSKI KALENDAR <span class="k-live-badge"><span class="k-pulse-dot"></span> LIVE WIRE</span></h2>
+                <div class="dedicated-hero-subtitle">Vesti visokog uticaja na berzu, inflacija (CPI), kamatne stope i analitički izveštaji za Dolar i Zlato</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="news-page-grid">
+            <!-- Left: Calendar Table -->
+            <div class="macro-dossier-card">
+              <h3><span>📅</span> Današnji Ekonomski Kalendar & Ključni Događaji</h3>
+              <table class="k-table" style="margin-top:12px;">
+                <thead>
+                  <tr>
+                    <th>Vreme (UTC)</th>
+                    <th>Valuta</th>
+                    <th>Događaj / Izveštaj</th>
+                    <th>Uticaj</th>
+                    <th class="tar">Prognoza</th>
+                    <th class="tar">Prethodno</th>
+                  </tr>
+                </thead>
+                <tbody id="dedicated-calendar-body">
+                  <tr>
+                    <td>13:30</td>
+                    <td><strong style="color:#38bdf8;">USD</strong></td>
+                    <td><strong>US Core CPI Inflation (MoM / YoY)</strong></td>
+                    <td><span class="badge-review" style="background:rgba(255,51,102,0.2); color:#ff3366; font-size:10px;">HIGH</span></td>
+                    <td class="tar">0.3%</td>
+                    <td class="tar">0.3%</td>
+                  </tr>
+                  <tr>
+                    <td>19:00</td>
+                    <td><strong style="color:#38bdf8;">USD</strong></td>
+                    <td><strong>FOMC Interest Rate Decision & Fed Statement</strong></td>
+                    <td><span class="badge-review" style="background:rgba(255,51,102,0.2); color:#ff3366; font-size:10px;">HIGH</span></td>
+                    <td class="tar">4.50%</td>
+                    <td class="tar">4.75%</td>
+                  </tr>
+                  <tr>
+                    <td>13:30</td>
+                    <td><strong style="color:#38bdf8;">USD</strong></td>
+                    <td>US Non-Farm Employment Change (NFP)</td>
+                    <td><span class="badge-review" style="background:rgba(255,51,102,0.2); color:#ff3366; font-size:10px;">HIGH</span></td>
+                    <td class="tar">180K</td>
+                    <td class="tar">216K</td>
+                  </tr>
+                  <tr>
+                    <td>14:45</td>
+                    <td><strong style="color:#38bdf8;">USD</strong></td>
+                    <td>US Flash Manufacturing PMI</td>
+                    <td><span class="badge-reliable" style="font-size:10px;">MEDIUM</span></td>
+                    <td class="tar">50.2</td>
+                    <td class="tar">49.8</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Right: Macro Intelligence Dossier -->
+            <div class="macro-dossier-card">
+              <h3><span>🧠</span> Sazetak Analitičara: Uticaj CPI na Zlato i Dolar</h3>
+              <p>
+                Danas je ključni dan za tržište zbog objave indeksa potrošačkih cena (CPI). Analitičari sa Wall Streeta i vodećih investicionih fondova pažljivo prate reakciju američkog Dolara (DXY) i Zlata (XAU/USD).
+              </p>
+
+              <div class="scenario-impact-box sc-bearish">
+                <div class="scenario-title">🔴 Scenario 1: Viši CPI od očekivanog (> 0.3%)</div>
+                <div class="scenario-desc">
+                  <strong>Dolar naglo jača</strong> jer investitori očekuju da će Federalne Rezerve odložiti smanjenje kamata. <strong>Zlato trpi pritisak</strong> i može doći do pada ka nivoima likvidnosti oko $3,960.
+                </div>
+              </div>
+
+              <div class="scenario-impact-box sc-bullish">
+                <div class="scenario-title">🟢 Scenario 2: Niži CPI od očekivanog (< 0.2%)</div>
+                <div class="scenario-desc">
+                  <strong>Dolar naglo slabi</strong>, prinosi na 2Y i 10Y obveznice padaju. <strong>Zlato doživljava snažnu ekspanziju</strong> sa probojem iznad $4,010 i ciljem ka novim maksimumima.
+                </div>
+              </div>
+
+              <div class="scenario-impact-box">
+                <div class="scenario-title">⚪ Scenario 3: U skladu sa prognozom (0.3%)</div>
+                <div class="scenario-desc">
+                  Kratkotrajna volatilnost tokom prvih 15 minuta, a zatim nastavak postojećeg tehničkog trenda prema SMC zonama akumulacije.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           PAGE 5: DEDICATED KVANTNI RADAR (REPLIKA SLIKE 1)
+           ========================================== -->
+      <div id="view-page-quant" class="page-view">
+        <div class="dedicated-page-container">
+          <div class="dedicated-hero-header">
+            <div class="dedicated-hero-left">
+              <span style="font-size:32px;">🌐</span>
+              <div class="dedicated-hero-title">
+                <h2>INSTITUTIONAL QUANTITATIVE COMMAND CENTER <span class="k-live-badge"><span class="k-pulse-dot"></span> 2Y YIELD RADAR</span></h2>
+                <div class="dedicated-hero-subtitle">Interest Rate Differential Momentum & Multi-Currency Strength Hub (Direktna replika Slike 1)</div>
+              </div>
+            </div>
+            <div class="dedicated-hero-right">
+              <div style="font-size:12px; color:#94a3b8; text-align:right;">
+                Rebalance: <strong style="color:#00f0ff;">Twice Daily (00:00 | 12:00 UTC)</strong><br>
+                Model: <strong>Mean Reversion + Momentum Blend</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="quant-lab-grid">
+            <!-- 1. Currency Strength Radar Wheel (Image 1 replica) -->
+            <div class="quant-card">
+              <div class="quant-card-title">
+                <span>🎯 Valutni Točak Snage (USD Centar)</span>
+                <span style="font-size:11px; color:#94a3b8;">8 Radijalnih Valuta</span>
+              </div>
+              <div class="currency-wheel-container">
+                <svg class="svg-radar-wheel" viewBox="0 0 300 280">
+                  <!-- Radial connecting spokes -->
+                  <line x1="150" y1="140" x2="150" y2="35" stroke="rgba(0,230,118,0.5)" stroke-width="2" stroke-dasharray="3,3" />
+                  <line x1="150" y1="140" x2="225" y2="65" stroke="rgba(0,230,118,0.5)" stroke-width="2" stroke-dasharray="3,3" />
+                  <line x1="150" y1="140" x2="255" y2="140" stroke="rgba(255,51,102,0.5)" stroke-width="2" stroke-dasharray="3,3" />
+                  <line x1="150" y1="140" x2="225" y2="215" stroke="rgba(255,51,102,0.5)" stroke-width="2" stroke-dasharray="3,3" />
+                  <line x1="150" y1="140" x2="150" y2="245" stroke="rgba(255,51,102,0.5)" stroke-width="2" stroke-dasharray="3,3" />
+                  <line x1="150" y1="140" x2="75" y2="215" stroke="rgba(0,230,118,0.5)" stroke-width="2" stroke-dasharray="3,3" />
+                  <line x1="150" y1="140" x2="45" y2="140" stroke="rgba(0,230,118,0.5)" stroke-width="2" stroke-dasharray="3,3" />
+                  <line x1="150" y1="140" x2="75" y2="65" stroke="rgba(255,51,102,0.5)" stroke-width="2" stroke-dasharray="3,3" />
+
+                  <!-- USD Center Hub Node -->
+                  <circle cx="150" cy="140" r="28" fill="#0b1329" stroke="#00f0ff" stroke-width="3" filter="drop-shadow(0 0 10px #00f0ff)" />
+                  <text x="150" y="145" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="900" font-family="sans-serif">USD</text>
+
+                  <!-- Spoke Nodes -->
+                  <!-- EUR (Top) -->
+                  <circle cx="150" cy="35" r="18" fill="#0d1f1f" stroke="#00e676" stroke-width="2" />
+                  <text x="150" y="39" text-anchor="middle" fill="#00e676" font-size="11" font-weight="800">EUR</text>
+
+                  <!-- GBP (Top-Right) -->
+                  <circle cx="225" cy="65" r="18" fill="#0d1f1f" stroke="#00e676" stroke-width="2" />
+                  <text x="225" y="69" text-anchor="middle" fill="#00e676" font-size="11" font-weight="800">GBP</text>
+
+                  <!-- CHF (Right) -->
+                  <circle cx="255" cy="140" r="18" fill="#1f0f18" stroke="#ff3366" stroke-width="2" />
+                  <text x="255" y="144" text-anchor="middle" fill="#ff3366" font-size="11" font-weight="800">CHF</text>
+
+                  <!-- CAD (Bottom-Right) -->
+                  <circle cx="225" cy="215" r="18" fill="#1f0f18" stroke="#ff3366" stroke-width="2" />
+                  <text x="225" y="219" text-anchor="middle" fill="#ff3366" font-size="11" font-weight="800">CAD</text>
+
+                  <!-- NZD (Bottom) -->
+                  <circle cx="150" cy="245" r="18" fill="#1f0f18" stroke="#ff3366" stroke-width="2" />
+                  <text x="150" y="249" text-anchor="middle" fill="#ff3366" font-size="11" font-weight="800">NZD</text>
+
+                  <!-- SEK (Bottom-Left) -->
+                  <circle cx="75" cy="215" r="18" fill="#0d1f1f" stroke="#00e676" stroke-width="2" />
+                  <text x="75" y="219" text-anchor="middle" fill="#00e676" font-size="11" font-weight="800">SEK</text>
+
+                  <!-- NOK (Left) -->
+                  <circle cx="45" cy="140" r="18" fill="#0d1f1f" stroke="#00e676" stroke-width="2" />
+                  <text x="45" y="144" text-anchor="middle" fill="#00e676" font-size="11" font-weight="800">NOK</text>
+
+                  <!-- JPY (Top-Left) -->
+                  <circle cx="75" cy="65" r="18" fill="#1f0f18" stroke="#ff3366" stroke-width="2" />
+                  <text x="75" y="69" text-anchor="middle" fill="#ff3366" font-size="11" font-weight="800">JPY</text>
+                </svg>
+              </div>
+            </div>
+
+            <!-- 2. Mathematical Model HUD (Image 1 replica) -->
+            <div class="quant-card">
+              <div class="quant-card-title">
+                <span>📐 Kvantni Matematički Model</span>
+                <span style="font-size:11px; color:#00f0ff;">Differential Momentum</span>
+              </div>
+              <div class="quant-formula-hud">
+                <div><span class="f-highlight">d<sub>t</sub> = y<sub>t</sub><sup>2Y</sup> - y<sub>USD</sub><sup>2Y</sup></span> &nbsp;&bull;&nbsp; Prinosni diferencijal (2-godišnje obveznice)</div>
+                <div><span class="f-highlight">m<sub>t</sub> = SMA<sub>S</sub>(d<sub>t</sub>) - SMA<sub>L</sub>(d<sub>t</sub>)</span> &nbsp;&bull;&nbsp; Momentum diferencijala prinosa</div>
+                <div><span class="f-highlight">w<sub>i</sub> &prop; -sign(m<sub>i</sub>)</span> &nbsp;&bull;&nbsp; Ponder portfolija prema reverziji</div>
+                <div class="f-sub">&bull; Fair value = moving target &bull; Rebalance: Twice Daily (00:00 | 12:00 UTC)</div>
+              </div>
+
+              <!-- Rebalance status -->
+              <div style="margin-top:14px; background:rgba(0,0,0,0.3); padding:10px 14px; border-radius:6px; font-size:12px; display:flex; justify-content:space-between;">
+                <span>⏱️ Sledeći Rebalance Portfolija:</span>
+                <strong style="color:#00f0ff;">00:00:00 UTC (Preostalo 04h : 22m)</strong>
+              </div>
+            </div>
+
+            <!-- 3. MQL5 Live Code Terminal (Image 1 replica) -->
+            <div class="quant-card">
+              <div class="quant-card-title">
+                <span>► MQL5 Eksekucioni Terminal</span>
+                <span style="font-size:11px; color:#00e676;">EA Running Core</span>
+              </div>
+              <div class="mql5-terminal-box">
+                <div class="code-header">
+                  <span>MQL5 Quantitative Core</span>
+                  <span>STATUS: ACTIVE</span>
+                </div>
+                <div class="code-line"><span class="line-num">1</span><span><span class="code-kw">input long</span> MagicA = <span class="code-var">1001</span>; <span class="code-comment">// Merlin 1 Gold</span></span></div>
+                <div class="code-line"><span class="line-num">2</span><span><span class="code-kw">input long</span> MagicB = <span class="code-var">2002</span>; <span class="code-comment">// Merlin 2 BTC</span></span></div>
+                <div class="code-line"><span class="line-num">3</span><span><span class="code-kw">double</span> diff = y2[i] - y2_us;</span></div>
+                <div class="code-line"><span class="line-num">4</span><span><span class="code-kw">double</span> mom = ma_fast - ma_slow;</span></div>
+                <div class="code-line"><span class="line-num">5</span><span><span class="code-kw">int</span> signal = <span class="code-var">0</span>;</span></div>
+                <div class="code-line"><span class="line-num">6</span><span><span class="code-kw">if</span>(<span class="code-fn">MathAbs</span>(mom) &gt; threshold) {</span></div>
+                <div class="code-line"><span class="line-num">7</span><span>&nbsp;&nbsp;&nbsp;&nbsp;signal = -<span class="code-fn">MathSign</span>(mom);</span></div>
+                <div class="code-line"><span class="line-num">8</span><span>}</span></div>
+                <div class="code-line"><span class="line-num">9</span><span><span class="code-fn">RebalancePortfolio</span>();</span></div>
+              </div>
+            </div>
+
+            <!-- 4. Momentum Ranking Bars (Image 1 replica) -->
+            <div class="quant-card">
+              <div class="quant-card-title">
+                <span>📊 Tabela Momenata & Jačine Valuta</span>
+                <span style="font-size:11px; color:#cbd5e1;">Rangirano</span>
+              </div>
+              <table class="momentum-bars-table">
+                <thead>
+                  <tr>
+                    <th>CCY</th>
+                    <th>d<sub>i</sub> (2Y)</th>
+                    <th>Momentum (m<sub>i</sub>)</th>
+                    <th style="width:140px;">Snaga</th>
+                    <th>Signal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>EUR</strong></td>
+                    <td class="text-green">+1.25</td>
+                    <td class="text-green">+1.25</td>
+                    <td><div class="bar-wrap"><div class="bar-fill green" style="width:85%;"></div></div></td>
+                    <td class="text-green">⬆ BUY</td>
+                  </tr>
+                  <tr>
+                    <td><strong>GBP</strong></td>
+                    <td class="text-green">+0.98</td>
+                    <td class="text-green">+0.98</td>
+                    <td><div class="bar-wrap"><div class="bar-fill green" style="width:72%;"></div></div></td>
+                    <td class="text-green">⬆ BUY</td>
+                  </tr>
+                  <tr>
+                    <td><strong>NOK</strong></td>
+                    <td class="text-green">+0.62</td>
+                    <td class="text-green">+0.62</td>
+                    <td><div class="bar-wrap"><div class="bar-fill green" style="width:58%;"></div></div></td>
+                    <td class="text-green">⬆ BUY</td>
+                  </tr>
+                  <tr>
+                    <td><strong>SEK</strong></td>
+                    <td class="text-green">+0.41</td>
+                    <td class="text-green">+0.41</td>
+                    <td><div class="bar-wrap"><div class="bar-fill green" style="width:42%;"></div></div></td>
+                    <td class="text-green">⬆ BUY</td>
+                  </tr>
+                  <tr>
+                    <td><strong>JPY</strong></td>
+                    <td class="text-red">-0.38</td>
+                    <td class="text-red">-0.38</td>
+                    <td><div class="bar-wrap"><div class="bar-fill red" style="width:38%;"></div></div></td>
+                    <td class="text-red">⬇ SELL</td>
+                  </tr>
+                  <tr>
+                    <td><strong>CHF</strong></td>
+                    <td class="text-red">-0.71</td>
+                    <td class="text-red">-0.71</td>
+                    <td><div class="bar-wrap"><div class="bar-fill red" style="width:54%;"></div></div></td>
+                    <td class="text-red">⬇ SELL</td>
+                  </tr>
+                  <tr>
+                    <td><strong>CAD</strong></td>
+                    <td class="text-red">-0.93</td>
+                    <td class="text-red">-0.93</td>
+                    <td><div class="bar-wrap"><div class="bar-fill red" style="width:68%;"></div></div></td>
+                    <td class="text-red">⬇ SELL</td>
+                  </tr>
+                  <tr>
+                    <td><strong>AUD</strong></td>
+                    <td class="text-red">-1.12</td>
+                    <td class="text-red">-1.12</td>
+                    <td><div class="bar-wrap"><div class="bar-fill red" style="width:78%;"></div></div></td>
+                    <td class="text-red">⬇ SELL</td>
+                  </tr>
+                  <tr>
+                    <td><strong>NZD</strong></td>
+                    <td class="text-red">-1.34</td>
+                    <td class="text-red">-1.34</td>
+                    <td><div class="bar-wrap"><div class="bar-fill red" style="width:88%;"></div></div></td>
+                    <td class="text-red">⬇ SELL</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </main>
+
+    <!-- 3. DESNI SLIM TOOL STRIP (KOYFIN IDENTIČAN) -->
+    <aside class="k-right-rail">
+      <button class="k-right-tool" title="Profil & Alati" onclick="alert('MOMEDO Trading Profil')">👤</button>
+      <button class="k-right-tool" title="Kalkulator Pozicije & Lot Veličine" onclick="alert('Kalkulator rizika: 1% na nalog')">🧮</button>
+      <button class="k-right-tool active" title="Merlin Algoritamski Puls" onclick="alert('Algoritamski engine online!')">⚡</button>
+      <button class="k-right-tool" title="Postavke Terminala" onclick="cycleTheme()">⚙️</button>
+    </aside>
+
+  </div>
+
+  <!-- ==========================================
+       FLOATING ACTION BUTTON: ASK MOMEDO AI (KOYFIN BLUE)
+       ========================================== -->
+  <button class="k-btn-ai-float" id="btn-ai-float" onclick="toggleAIChat()">
+    <span class="k-ai-bubble">💬</span>
+    <span>Ask MOMEDO AI</span>
+  </button>
+
+  <!-- AI CHAT DRAWER MODAL -->
+  <div class="k-ai-drawer" id="k-ai-drawer" style="display:none;">
+    <div class="k-ai-drawer-header">
+      <div class="k-ai-title-wrap">
+        <span class="k-ai-icon">🤖</span>
+        <strong>MOMEDO Algorithmic AI Assistant</strong>
+      </div>
+      <button class="k-btn-close-drawer" onclick="toggleAIChat()">✕</button>
+    </div>
+    <div class="k-ai-chat-body" id="ai-chat-messages">
+      <div class="k-ai-msg bot">
+        Zdravo! Ja sam MOMEDO AI terminal asistent. Mogu analizirati trenutnu likvidnost, SMC nivoe, uticaj CPI inflacije i preporučiti optimalne tačke ulaza za Merlin 1 (Zlato) i Merlin 2 (Bitcoin). Kako vam mogu pomoći?
+      </div>
+    </div>
+    <div class="k-ai-input-row">
+      <input type="text" id="ai-input" placeholder="Pitajte npr: Kakav je plan za Zlato danas?" onkeydown="if(event.key==='Enter')sendAIMessage()">
+      <button onclick="sendAIMessage()">Pošalji</button>
+    </div>
+  </div>
+
+  <!-- TOAST OBAVEŠTENJE -->
+  <div id="toast" class="toast">Nivoi uspešno kopirani u memoriju!</div>
+
+  <!-- MODAL ZA POVEĆANI POGLED U PRVOM PLANU (FOREGROUND FOCUS OVERLAY) -->
+  <div class="k-focus-backdrop" id="focus-backdrop" onclick="closeCardExpand()"></div>
+
+  <script src="/static/app.js?v=12.0"></script>
+</body>
+</html>

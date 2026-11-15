@@ -1,0 +1,2241 @@
+/* ========================================================
+   MOMEDO PLATFORM — KOYFIN TERMINAL EDITION (v11.0)
+   1:1 Authentic Koyfin Desktop Data Terminal Architecture
+   Features:
+   - Left Slim Dark Navigation Rail
+   - 3-Column Structured Financial Data Grid
+   - Normalized Comparative Chart & Live Candlesticks
+   - Right Tool Rail & Floating "Ask MOMEDO AI" Pill
+   - Dynamic Foreground Focus (1-Click Pop-out modal for any card)
+   - 4 Complete Visual Themes (Default: Koyfin Clean Light)
+   ======================================================== */
+
+/* ========================================================
+   MOMEDO PLATFORM — INSTITUTIONAL PROFI QUANT REŽIM (v12.0)
+   Features:
+   - Deep Cyber Dark Glassmorphism matching Image 1 & Image 2
+   - High-contrast neon cyan (#00f0ff), emerald (#00e676), crimson (#ff3366), gold (#ffd700)
+   - Professional typography: Inter UI + JetBrains Mono for razor-sharp numbers
+   - Sub-millisecond MT5 Live Sync
+   ======================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* PROFI REŽIM: Authentic Deep Cyber Glassmorphism */
+  --k-bg-root: transparent;
+  --k-bg-card: rgba(11, 16, 26, 0.82);
+  --k-bg-card-subtle: rgba(15, 23, 38, 0.78);
+  --k-bg-subhead: rgba(18, 27, 44, 0.88);
+  --k-bg-rail: rgba(7, 10, 16, 0.95);
+  --k-bg-rail-hover: rgba(0, 240, 255, 0.12);
+  --k-bg-rail-active: rgba(0, 240, 255, 0.22);
+
+  --k-border-main: rgba(0, 240, 255, 0.22);
+  --k-border-subtle: rgba(255, 255, 255, 0.08);
+
+  --k-text-main: #f8fafc;
+  --k-text-secondary: #cbd5e1;
+  --k-text-muted: #94a3b8;
+  --k-text-dim: #64748b;
+
+  --k-blue: #00f0ff;
+  --k-blue-hover: #38bdf8;
+  --k-blue-bg: rgba(0, 240, 255, 0.14);
+
+  --k-green: #00e676;
+  --k-green-bg: rgba(0, 230, 118, 0.16);
+  --k-red: #ff3366;
+  --k-red-bg: rgba(255, 51, 102, 0.16);
+  --k-gold: #ffd700;
+  --k-gold-bg: rgba(255, 215, 0, 0.16);
+
+  --k-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --k-font-mono: 'JetBrains Mono', Consolas, "SF Mono", monospace;
+  --k-font-display: 'Chakra Petch', 'Inter', sans-serif;
+}
+
+/* ========================================================
+   THEME OVERRIDES
+   ======================================================== */
+body.theme-profi-quant, body {
+  --k-bg-root: transparent;
+  --k-bg-card: rgba(11, 16, 26, 0.82);
+  --k-bg-card-subtle: rgba(15, 23, 38, 0.78);
+  --k-bg-subhead: rgba(18, 27, 44, 0.88);
+  --k-bg-rail: rgba(7, 10, 16, 0.95);
+  --k-border-main: rgba(0, 240, 255, 0.22);
+  --k-border-subtle: rgba(255, 255, 255, 0.08);
+  --k-text-main: #f8fafc;
+  --k-text-secondary: #cbd5e1;
+  --k-text-muted: #94a3b8;
+  --k-blue: #00f0ff;
+  --k-blue-bg: rgba(0, 240, 255, 0.15);
+}
+
+body.theme-champagne-gold {
+  --k-bg-root: transparent;
+  --k-bg-card: rgba(27, 30, 39, 0.85);
+  --k-bg-card-subtle: rgba(34, 38, 51, 0.8);
+  --k-bg-subhead: rgba(22, 24, 33, 0.9);
+  --k-bg-rail: rgba(14, 16, 21, 0.96);
+  --k-border-main: rgba(212, 175, 55, 0.3);
+  --k-border-subtle: rgba(255, 255, 255, 0.08);
+  --k-text-main: #f8fafc;
+  --k-text-secondary: #cbd5e1;
+  --k-text-muted: #94a3b8;
+  --k-blue: #ffd700;
+  --k-blue-bg: rgba(255, 215, 0, 0.15);
+}
+
+body.theme-titanium-slate {
+  --k-bg-root: transparent;
+  --k-bg-card: rgba(31, 37, 51, 0.85);
+  --k-bg-card-subtle: rgba(39, 46, 62, 0.8);
+  --k-bg-subhead: rgba(24, 29, 40, 0.9);
+  --k-bg-rail: rgba(17, 20, 28, 0.96);
+  --k-border-main: rgba(56, 189, 248, 0.3);
+  --k-border-subtle: rgba(255, 255, 255, 0.08);
+  --k-text-main: #f1f5f9;
+  --k-text-secondary: #cbd5e1;
+  --k-text-muted: #94a3b8;
+  --k-blue: #38bdf8;
+  --k-blue-bg: rgba(56, 189, 248, 0.15);
+}
+
+body.theme-cyber-orange {
+  --k-bg-root: transparent;
+  --k-bg-card: rgba(23, 26, 34, 0.85);
+  --k-bg-card-subtle: rgba(31, 35, 46, 0.8);
+  --k-bg-subhead: rgba(17, 19, 25, 0.9);
+  --k-bg-rail: rgba(10, 11, 14, 0.96);
+  --k-border-main: rgba(255, 102, 0, 0.3);
+  --k-border-subtle: rgba(255, 255, 255, 0.08);
+  --k-text-main: #ffffff;
+  --k-text-secondary: #e2e8f0;
+  --k-text-muted: #94a3b8;
+  --k-blue: #ff6600;
+  --k-blue-bg: rgba(255, 102, 0, 0.15);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  font-family: var(--k-font-sans);
+  background: radial-gradient(circle at 75% 25%, rgba(9, 14, 24, 0.78) 0%, rgba(5, 8, 14, 0.94) 85%),
+              url('/static/cyber_ai_bg.jpg') center top / cover fixed no-repeat !important;
+  background-attachment: fixed !important;
+  background-color: #06090f !important;
+  color: var(--k-text-main);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ========================================================
+   PLIVAJUĆE SETAJUĆE TRAKE (SA LEVA KA DESNOM)
+   Traka 1: Globalne cene (Normalna brzina)
+   Traka 2: Indikatori i telemetrija (Sporija brzina)
+   ======================================================== */
+.ticker-strip-top {
+  width: 100vw;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  z-index: 60;
+  border-bottom: 1px solid var(--k-border-main);
+  backdrop-filter: blur(8px);
+}
+
+.strip-prices {
+  height: 26px;
+  background: rgba(8, 12, 20, 0.92) !important;
+}
+
+.strip-indicators {
+  height: 24px;
+  background: rgba(6, 10, 16, 0.94) !important;
+}
+
+.marquee-track-ltr {
+  display: flex;
+  width: max-content;
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* Kretanje SA LEVA NA DESNO (transform: translateX(-50%) ka translateX(0%)) */
+@keyframes marquee-ltr {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.speed-normal {
+  animation: marquee-ltr 28s linear infinite;
+}
+
+.speed-slow {
+  animation: marquee-ltr 54s linear infinite;
+}
+
+.marquee-track-ltr:hover {
+  animation-play-state: paused;
+}
+
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 16px;
+  font-family: var(--k-font-mono);
+  font-size: 11px;
+  border-right: 1px solid var(--k-border-subtle);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.ticker-item:hover {
+  background: var(--k-bg-card-subtle);
+}
+
+.ticker-sym {
+  font-weight: 800;
+  color: var(--k-text-main);
+}
+
+.ticker-val {
+  font-weight: 700;
+  color: var(--k-text-secondary);
+}
+
+.ticker-chg {
+  font-size: 9px;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+.badge-up {
+  background: var(--k-green-bg);
+  color: var(--k-green);
+}
+
+.badge-down {
+  background: var(--k-red-bg);
+  color: var(--k-red);
+}
+
+.indicator-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 18px;
+  font-family: var(--k-font-mono);
+  font-size: 10px;
+  border-right: 1px solid var(--k-border-subtle);
+}
+
+.ind-lbl {
+  font-weight: 800;
+  color: var(--k-blue);
+  text-transform: uppercase;
+}
+
+.ind-val {
+  color: var(--k-text-secondary);
+  font-weight: 600;
+}
+
+/* KOYFIN SHELL (Prilagođen za 2 gornje trake) */
+.koyfin-shell {
+  display: flex;
+  width: 100vw;
+  height: calc(100vh - 50px);
+  min-height: 0;
+  overflow: hidden;
+  flex: 1;
+}
+
+
+/* 1. LEVI SLIM NAVIGATION RAIL (KOYFIN IDENTIČAN) */
+.k-left-rail {
+  width: 50px;
+  background: var(--k-bg-rail);
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  flex-shrink: 0;
+  z-index: 50;
+}
+
+.k-rail-brand {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  overflow: hidden;
+  border: 1px solid #333;
+}
+
+.k-brand-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.k-rail-nav,
+.k-rail-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+}
+
+.k-rail-item {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.18s ease;
+}
+
+.k-icon {
+  font-size: 17px;
+  line-height: 1;
+}
+
+.k-rail-item:hover {
+  background: var(--k-bg-rail-hover);
+  color: #ffffff;
+}
+
+.k-rail-item.active {
+  background: var(--k-blue);
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 102, 245, 0.4);
+}
+
+.k-tip {
+  position: absolute;
+  left: 100%;
+  margin-left: 10px;
+  background: #0f172a;
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-6px);
+  transition: all 0.18s ease;
+  z-index: 999;
+}
+
+.k-rail-item:hover .k-tip {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* 3. DESNI SLIM TOOL STRIP */
+.k-right-rail {
+  width: 38px;
+  background: var(--k-bg-rail);
+  border-left: 1px solid rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 0;
+  gap: 12px;
+  flex-shrink: 0;
+  z-index: 50;
+}
+
+.k-right-tool {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.k-right-tool:hover {
+  background: var(--k-bg-rail-hover);
+  color: #fff;
+}
+
+.k-right-tool.active {
+  background: var(--k-blue);
+  color: #fff;
+}
+
+/* ========================================================
+   2. CENTRALNI KOYFIN WORKSPACE
+   ======================================================== */
+.k-workspace {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--k-bg-root);
+  min-width: 0;
+}
+
+/* TOPBAR */
+.k-topbar {
+  height: 42px;
+  background: rgba(10, 15, 25, 0.92) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--k-border-main);
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  z-index: 30;
+}
+
+.k-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.k-crumb-muted {
+  color: var(--k-text-muted);
+}
+
+.k-crumb-sep {
+  color: var(--k-border-main);
+}
+
+.k-crumb-active {
+  color: var(--k-text-main);
+  font-weight: 700;
+}
+
+.k-live-badge {
+  background: var(--k-green-bg);
+  color: var(--k-green);
+  border: 1px solid var(--k-green);
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.k-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--k-green);
+  box-shadow: 0 0 8px var(--k-green);
+  animation: pulse-live 1.2s infinite;
+}
+
+@keyframes pulse-live {
+  0% { transform: scale(0.9); opacity: 0.7; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.7; }
+}
+
+/* THEME SELECTOR PILL */
+.k-theme-pill-bar {
+  display: flex;
+  background: rgba(15, 23, 42, 0.85);
+  padding: 2px;
+  border-radius: 6px;
+  border: 1px solid var(--k-border-main);
+}
+
+.k-theme-tab {
+  background: transparent;
+  border: none;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--k-text-muted);
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.k-theme-tab:hover {
+  color: var(--k-text-main);
+}
+
+.k-theme-tab.active {
+  background: var(--k-blue);
+  color: #050810;
+  font-weight: 800;
+}
+
+.k-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.k-admin-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--k-font-mono);
+  font-size: 11px;
+  background: var(--k-gold-bg);
+  border: 1px solid var(--k-gold);
+  color: var(--k-gold);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.k-online-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--k-green);
+}
+
+.k-clock {
+  font-family: var(--k-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--k-blue);
+  background: rgba(0, 240, 255, 0.08);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+/* TRIAL STRIP */
+.k-trial-strip {
+  background: rgba(12, 18, 30, 0.88) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--k-border-subtle);
+  padding: 5px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+.k-trial-txt strong {
+  color: var(--k-blue);
+}
+
+.k-trial-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.k-btn-extend {
+  background: linear-gradient(135deg, #00b0ff, #00e676);
+  color: #050810;
+  border: none;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.k-btn-toggle-paywall {
+  background: rgba(15, 23, 42, 0.8);
+  color: var(--k-text-muted);
+  border: 1px solid var(--k-border-main);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ========================================================
+   KOYFIN 3-COLUMN DATA TERMINAL GRID
+   Centralni grafikon dominira ekranom (veća širina i visina)
+   ======================================================== */
+.k-terminal-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr) 280px;
+  gap: 10px;
+  padding: 10px;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+@media (max-width: 1280px) {
+  .k-terminal-grid {
+    grid-template-columns: 220px minmax(0, 1fr) 260px;
+  }
+}
+
+.k-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+}
+
+/* ========================================================
+   KOYFIN CARD ARCHITECTURE (CYBER GLASS)
+   ======================================================== */
+.k-card {
+  background: var(--k-bg-card) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--k-border-main);
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.k-card:hover {
+  border-color: rgba(0, 240, 255, 0.45);
+  box-shadow: 0 6px 28px rgba(0, 240, 255, 0.1), 0 4px 24px rgba(0, 0, 0, 0.5);
+}
+
+.k-card-header {
+  height: 30px;
+  background: rgba(14, 21, 35, 0.88) !important;
+  border-bottom: 1px solid var(--k-border-subtle);
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.k-card-title {
+  font-family: var(--k-font-display);
+  font-size: 12px;
+  font-weight: 700;
+  color: #00f0ff;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.k-card-popout {
+  background: transparent;
+  border: none;
+  color: var(--k-text-dim);
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 3px;
+  line-height: 1;
+  transition: all 0.15s;
+}
+
+.k-card-popout:hover {
+  background: rgba(0, 240, 255, 0.15);
+  color: var(--k-blue);
+}
+
+/* ========================================================
+   KOYFIN DATA TABLES (SHARP NUMBERS & TYPOGRAPHY)
+   ======================================================== */
+.k-table-scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 240px;
+}
+
+.k-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11.5px;
+  font-family: var(--k-font-sans);
+  text-align: left;
+}
+
+.k-table th {
+  background: rgba(10, 15, 26, 0.95) !important;
+  color: #00f0ff;
+  font-family: var(--k-font-display);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--k-border-main);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  white-space: nowrap;
+}
+
+.k-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
+  white-space: nowrap;
+}
+
+.k-table tr:hover td {
+  background: rgba(0, 240, 255, 0.08) !important;
+  cursor: pointer;
+}
+
+.tar {
+  text-align: right;
+  font-family: var(--k-font-mono) !important;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+
+.k-subhead-row td {
+  background: rgba(16, 24, 40, 0.92) !important;
+  font-size: 10.5px;
+  font-weight: 800;
+  color: #ffd700;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  font-family: var(--k-font-display);
+  letter-spacing: 0.5px;
+}
+
+.k-badge-sq {
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+  border-radius: 2px;
+}
+
+.bg-purple { background: #a855f7; }
+.bg-blue   { background: #00f0ff; }
+.bg-orange { background: #f97316; }
+.bg-gold   { background: #ffd700; }
+.bg-green  { background: #00e676; }
+.bg-slate  { background: #94a3b8; }
+
+.text-green { color: #00e676 !important; font-weight: 800; }
+.text-red   { color: #ff3366 !important; font-weight: 800; }
+.text-gold  { color: #ffd700 !important; font-weight: 800; }
+.text-blue  { color: #00f0ff !important; font-weight: 800; }
+.text-bold  { font-weight: 800; color: #ffffff !important; }
+.text-muted { color: var(--k-text-dim); }
+
+/* ========================================================
+   CENTER COLUMN: NEWS + CHART + HEATMAP & YIELDS
+   ======================================================== */
+.k-card-news {
+  flex-shrink: 0;
+  height: 28px;
+  min-height: 28px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 8px;
+  background: var(--k-bg-card-subtle);
+  border: 1px solid var(--k-border-main);
+}
+
+.k-card-news .k-card-header {
+  height: 100%;
+  border-bottom: none;
+  padding: 0 6px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-right: 1px solid var(--k-border-subtle);
+}
+
+.k-news-feed {
+  flex: 1;
+  padding: 0 10px;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  align-items: center;
+  gap: 16px;
+  white-space: nowrap;
+}
+
+.k-news-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  border-bottom: none;
+}
+
+.k-news-headline {
+  color: var(--k-text-main);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.k-news-meta {
+  color: var(--k-text-dim);
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+/* CHART CARD — ISTAKNUT I UVELICAN */
+.k-card-chart {
+  flex: 1;
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+  background: rgba(9, 13, 22, 0.88) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1.5px solid rgba(0, 240, 255, 0.35) !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 240, 255, 0.15) !important;
+  border-radius: 8px;
+  position: relative;
+}
+
+.k-card-chart .k-card-header {
+  height: 34px;
+  padding: 0 12px;
+  background: var(--k-bg-card-subtle);
+  border-bottom: 1px solid var(--k-border-main);
+}
+
+.k-card-chart .k-card-title {
+  font-size: 12px;
+  font-weight: 900;
+  color: var(--k-text-main);
+  letter-spacing: 0.4px;
+}
+
+
+.k-chart-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.k-live-price-hud {
+  font-family: var(--k-font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--k-blue);
+  background: var(--k-blue-bg);
+  border: 1px solid var(--k-blue);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.k-btn-indicator-toggle {
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 3px;
+  background: var(--k-bg-subhead);
+  border: 1px solid var(--k-border-main);
+  color: var(--k-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.k-btn-indicator-toggle.active {
+  background: var(--k-green-bg);
+  border-color: var(--k-green);
+  color: var(--k-green);
+}
+
+.k-chart-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* MT5 & TRADINGVIEW MULTI-WINDOW GRID SELECTOR */
+.k-layout-selector {
+  display: flex;
+  background: var(--k-bg-subhead);
+  border: 1px solid var(--k-border-main);
+  border-radius: 4px;
+  padding: 1px;
+  gap: 2px;
+}
+
+.k-layout-btn {
+  background: transparent;
+  border: none;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--k-font-mono);
+  color: var(--k-text-muted);
+  padding: 2px 7px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.k-layout-btn:hover {
+  color: var(--k-text-main);
+}
+
+.k-layout-btn.active {
+  background: var(--k-blue);
+  color: #fff;
+}
+
+/* MT5-STYLE CHART TABS BAR */
+.mt5-chart-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--k-bg-card-subtle);
+  border-bottom: 1px solid var(--k-border-subtle);
+  padding: 4px 8px;
+  overflow-x: auto;
+}
+
+.mt5-tab {
+  background: var(--k-bg-card);
+  border: 1px solid var(--k-border-main);
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--k-text-muted);
+  padding: 4px 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+
+.mt5-tab:hover {
+  color: var(--k-text-main);
+  background: var(--k-bg-subhead);
+}
+
+.mt5-tab.active {
+  background: var(--k-bg-card);
+  border-color: var(--k-blue);
+  color: var(--k-blue);
+  border-bottom: 2px solid var(--k-blue);
+}
+
+.mt5-tab-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.dot-gold   { background: #eab308; }
+.dot-blue   { background: #0066f5; }
+.dot-green  { background: #10b981; }
+.dot-purple { background: #8b5cf6; }
+
+.mt5-tab.add-tab {
+  border: 1px dashed var(--k-border-main);
+  border-radius: 4px;
+  padding: 4px 8px;
+  color: var(--k-text-dim);
+}
+
+.mt5-tab.add-tab:hover {
+  color: var(--k-blue);
+  border-color: var(--k-blue);
+}
+
+.k-chart-mode-pill {
+  display: flex;
+  background: var(--k-bg-subhead);
+  border-radius: 4px;
+  padding: 1px;
+}
+
+.k-btn-mode {
+  background: transparent;
+  border: none;
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--k-text-muted);
+  padding: 2px 6px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.k-btn-mode.active {
+  background: var(--k-blue);
+  color: #fff;
+}
+
+.k-btn-tool {
+  background: transparent;
+  border: 1px solid var(--k-border-main);
+  border-radius: 3px;
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--k-text-muted);
+  padding: 2px 6px;
+  cursor: pointer;
+}
+
+.k-chart-toolbar {
+  background: var(--k-bg-card-subtle);
+  border-bottom: 1px solid var(--k-border-subtle);
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.k-tf-group {
+  display: flex;
+  gap: 3px;
+}
+
+.k-tf-btn {
+  background: transparent;
+  border: none;
+  font-family: var(--k-font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--k-text-muted);
+  padding: 2px 6px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.k-tf-btn:hover {
+  background: var(--k-border-subtle);
+  color: var(--k-text-main);
+}
+
+.k-tf-btn.active {
+  background: var(--k-blue);
+  color: #fff;
+}
+
+.k-asset-pills {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.k-asset-pill {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--k-bg-card);
+  border: 1px solid var(--k-border-main);
+  color: var(--k-text-secondary);
+  cursor: pointer;
+}
+
+.k-asset-pill:hover {
+  border-color: var(--k-blue);
+}
+
+.c-orange { border-left: 3px solid #f97316; }
+.c-blue   { border-left: 3px solid #38bdf8; }
+.c-purple { border-left: 3px solid #8b5cf6; }
+.c-gold   { border-left: 3px solid #eab308; }
+.c-green  { border-left: 3px solid #10b981; }
+
+/* MULTI-WINDOW STAGE — PROSTRAN I ISTAKNUT */
+.k-chart-stage {
+  flex: 1;
+  position: relative;
+  background: #080c14 !important;
+  min-height: 400px;
+  display: grid;
+}
+
+.k-chart-stage.layout-1x1 {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+
+.k-chart-stage.layout-2x1 {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 4px;
+}
+
+.k-chart-stage.layout-1x2 {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 4px;
+}
+
+.k-chart-stage.layout-2x2 {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 4px;
+}
+
+.chart-pane {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: #080c14 !important;
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  overflow: hidden;
+  min-height: 0;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.chart-pane.active-pane {
+  border-color: #00f0ff;
+  box-shadow: inset 0 0 0 1px #00f0ff;
+}
+
+.pane-header {
+  height: 24px;
+  background: rgba(14, 21, 35, 0.95) !important;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.15);
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  font-size: 10px;
+  font-family: var(--k-font-mono);
+}
+
+.pane-title {
+  font-weight: 800;
+  color: var(--k-text-secondary);
+}
+
+.pane-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pane-bidask {
+  font-weight: 700;
+  color: var(--k-text-main);
+}
+
+.pane-spread {
+  color: var(--k-blue);
+  background: var(--k-blue-bg);
+  padding: 1px 4px;
+  border-radius: 2px;
+  font-size: 9px;
+}
+
+.pane-btn-max {
+  background: transparent;
+  border: none;
+  color: var(--k-text-dim);
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.pane-btn-max:hover {
+  color: var(--k-blue);
+}
+
+.pane-canvas-wrap {
+  flex: 1;
+  position: relative;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.pane-canvas-wrap canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: crosshair;
+}
+
+
+.k-chart-ohlc-hud {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--k-border-main);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: var(--k-font-mono);
+  font-size: 10px;
+  color: var(--k-text-muted);
+  display: flex;
+  gap: 8px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+body.theme-champagne-gold .k-chart-ohlc-hud,
+body.theme-titanium-slate .k-chart-ohlc-hud,
+body.theme-cyber-orange .k-chart-ohlc-hud {
+  background: rgba(20, 24, 34, 0.88);
+}
+
+.k-chart-bottom-bar {
+  height: 24px;
+  border-top: 1px solid var(--k-border-subtle);
+  background: var(--k-bg-card-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  font-size: 10px;
+  font-family: var(--k-font-mono);
+  color: var(--k-text-dim);
+}
+
+.k-dates-axis {
+  display: flex;
+  gap: 38px;
+}
+
+.k-chart-actions-right button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--k-text-dim);
+}
+
+/* 50/50 SPLIT ROW IN CENTER */
+.k-split-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  height: 140px;
+  flex-shrink: 0;
+}
+
+/* HEATMAP MATRIX */
+.k-factor-sub {
+  font-size: 9px;
+  color: var(--k-text-dim);
+  padding: 4px 8px;
+  background: var(--k-bg-card-subtle);
+  border-bottom: 1px solid var(--k-border-subtle);
+}
+
+.k-heatmap-table {
+  width: 100%;
+  height: calc(100% - 22px);
+  border-collapse: collapse;
+  text-align: center;
+  font-family: var(--k-font-mono);
+  font-size: 11px;
+}
+
+.k-heatmap-table th {
+  font-size: 9px;
+  color: var(--k-text-dim);
+  padding: 4px;
+  border-bottom: 1px solid var(--k-border-subtle);
+}
+
+.k-heat-row-lbl {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--k-text-dim);
+  width: 40px;
+}
+
+.heat-box {
+  padding: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-weight: 800;
+}
+
+.heat-red     { background: rgba(255, 51, 102, 0.2) !important; color: #ff3366 !important; border: 1px solid rgba(255, 51, 102, 0.4) !important; }
+.heat-green   { background: rgba(0, 230, 118, 0.2) !important; color: #00e676 !important; border: 1px solid rgba(0, 230, 118, 0.4) !important; }
+.heat-neutral { background: rgba(148, 163, 184, 0.15) !important; color: #94a3b8 !important; border: 1px solid rgba(148, 163, 184, 0.3) !important; }
+.heat-gold    { background: rgba(255, 215, 0, 0.2) !important; color: #ffd700 !important; border: 1px solid rgba(255, 215, 0, 0.4) !important; }
+
+.k-flag {
+  font-size: 13px;
+  margin-right: 4px;
+}
+
+/* ========================================================
+   RIGHT COLUMN: CURRENCIES + TICKET/MARKETS + COMMODITIES
+   ======================================================== */
+.k-tab-toggle {
+  display: flex;
+  gap: 4px;
+}
+
+.k-sub-tab {
+  background: transparent;
+  border: none;
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--k-text-muted);
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.k-sub-tab.active {
+  background: var(--k-blue);
+  color: #fff;
+}
+
+/* ROBINHOOD STYLE EXECUTION TICKET */
+.k-ticket-body {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.k-ticket-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.k-directive-badge {
+  font-size: 11px;
+  font-weight: 900;
+  color: var(--k-blue);
+  letter-spacing: 0.5px;
+}
+
+.k-directive-score {
+  font-family: var(--k-font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  background: var(--k-green-bg);
+  color: var(--k-green);
+  border: 1px solid var(--k-green);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.k-ticket-zone {
+  font-size: 10px;
+  color: var(--k-text-muted);
+  font-family: var(--k-font-mono);
+}
+
+.k-ticket-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  background: var(--k-bg-card-subtle);
+  border: 1px solid var(--k-border-subtle);
+  border-radius: 4px;
+  padding: 6px;
+}
+
+.k-t-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.k-t-cell .lbl {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--k-text-dim);
+}
+
+.k-t-cell .val {
+  font-family: var(--k-font-mono);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.k-btn-copy-ticket {
+  background: var(--k-blue);
+  color: #fff;
+  border: none;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 102, 245, 0.25);
+}
+
+.k-btn-copy-ticket:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.k-ticket-reason {
+  font-size: 10px;
+  line-height: 1.4;
+  color: var(--k-text-muted);
+  background: var(--k-bg-card-subtle);
+  border-left: 2px solid var(--k-blue);
+  padding: 5px 8px;
+  border-radius: 0 3px 3px 0;
+}
+
+/* VIP LOCK OVERLAY */
+.k-vip-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(8px);
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  text-align: center;
+}
+
+.k-vip-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+}
+
+.k-lock-ico {
+  font-size: 28px;
+}
+
+.k-vip-box h4 {
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--k-gold);
+}
+
+.k-vip-box p {
+  font-size: 10px;
+  line-height: 1.4;
+  color: #cbd5e1;
+}
+
+.k-btn-vip-unlock {
+  background: var(--k-gold);
+  color: #000;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+/* ========================================================
+   FLOATING BUTTON: ASK MOMEDO AI (KOYFIN BLUE)
+   ======================================================== */
+.k-btn-ai-float {
+  position: fixed;
+  bottom: 18px;
+  right: 56px;
+  background: #0066f5;
+  color: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  padding: 9px 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 102, 245, 0.4);
+  z-index: 80;
+  transition: all 0.2s ease;
+}
+
+.k-btn-ai-float:hover {
+  background: #0052cc;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 102, 245, 0.5);
+}
+
+.k-ai-bubble {
+  font-size: 15px;
+}
+
+/* AI DRAWER MODAL */
+.k-ai-drawer {
+  position: fixed;
+  bottom: 60px;
+  right: 56px;
+  width: 360px;
+  height: 440px;
+  background: var(--k-bg-card);
+  border: 1px solid var(--k-border-main);
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  overflow: hidden;
+  animation: fadeIn 0.2s ease;
+}
+
+.k-ai-drawer-header {
+  height: 38px;
+  background: var(--k-blue);
+  color: #fff;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.k-ai-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.k-btn-close-drawer {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.k-ai-chat-body {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.k-ai-msg {
+  padding: 8px 12px;
+  border-radius: 6px;
+  max-width: 90%;
+}
+
+.k-ai-msg.bot {
+  background: var(--k-bg-card-subtle);
+  border: 1px solid var(--k-border-subtle);
+  color: var(--k-text-main);
+}
+
+.k-ai-msg.user {
+  background: var(--k-blue);
+  color: #fff;
+  align-self: flex-end;
+}
+
+.k-ai-input-row {
+  display: flex;
+  border-top: 1px solid var(--k-border-main);
+  padding: 6px;
+  background: var(--k-bg-card);
+}
+
+.k-ai-input-row input {
+  flex: 1;
+  border: 1px solid var(--k-border-main);
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  outline: none;
+}
+
+.k-ai-input-row button {
+  background: var(--k-blue);
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin-left: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ========================================================
+   DYNAMIC FOREGROUND FOCUS ("IZBIJA U PRVI PLAN")
+   When any card or popout button is clicked!
+   ======================================================== */
+.k-focus-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(8px);
+  z-index: 500;
+  animation: fadeIn 0.2s ease;
+}
+
+.k-card.expanded-focus {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 86vw !important;
+  max-width: 1240px !important;
+  height: 84vh !important;
+  max-height: 840px !important;
+  z-index: 1000 !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45) !important;
+  border: 2px solid var(--k-blue) !important;
+  border-radius: 10px !important;
+  animation: modalPop 0.25s ease-out forwards;
+}
+
+.k-card.expanded-focus .k-table-scroll {
+  max-height: none !important;
+  flex: 1;
+}
+
+.k-card.expanded-focus .k-table td {
+  padding: 8px 12px !important;
+  font-size: 12px !important;
+}
+
+.k-card.expanded-focus .k-chart-stage {
+  min-height: 480px !important;
+}
+
+.k-card.expanded-focus .k-card-header {
+  height: 40px !important;
+  padding: 0 16px !important;
+  background: var(--k-bg-card-subtle) !important;
+}
+
+.k-card.expanded-focus .k-card-title {
+  font-size: 13px !important;
+}
+
+.k-card.expanded-focus .k-card-popout {
+  font-size: 18px !important;
+  color: var(--k-red) !important;
+}
+
+@keyframes modalPop {
+  from { opacity: 0; transform: translate(-50%, -48%) scale(0.97); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* TOAST */
+.toast {
+  visibility: hidden;
+  min-width: 260px;
+  background-color: var(--k-green);
+  color: #000;
+  text-align: center;
+  border-radius: 6px;
+  padding: 10px 16px;
+  position: fixed;
+  z-index: 9999;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: 800;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.toast.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* ========================================================
+   IMAGE 2 BACKGROUND & CYBER AI OVERLAY
+   ======================================================== */
+body {
+  background: radial-gradient(circle at 75% 20%, rgba(10, 15, 26, 0.82) 0%, rgba(6, 9, 15, 0.95) 85%),
+              url('/static/cyber_ai_bg.jpg') center top / cover fixed no-repeat !important;
+  background-attachment: fixed !important;
+  color: #e2e8f0;
+}
+
+/* Top floating tickers transparent background integration */
+.ticker-strip-top {
+  background: rgba(8, 12, 20, 0.92) !important;
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(0, 240, 255, 0.15) !important;
+}
+
+/* Top bar navigation pills for dedicated multi-page routing */
+.page-nav-pill-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(13, 20, 32, 0.85);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-radius: 8px;
+  padding: 3px 5px;
+}
+
+.k-page-tab {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  padding: 6px 14px;
+  font-size: 11.5px;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.k-page-tab:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.k-page-tab.active {
+  color: #00f0ff;
+  background: rgba(0, 240, 255, 0.15);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.25);
+  border: 1px solid rgba(0, 240, 255, 0.35);
+}
+
+/* Page Views Container */
+.page-view {
+  display: none;
+  width: 100%;
+  height: 100%;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.page-view.active {
+  display: block;
+}
+
+/* ========================================================
+   DEDICATED FULL-VIEW PAGES (MERLIN 1, MERLIN 2, NEWS, QUANT)
+   ======================================================== */
+.dedicated-page-container {
+  padding: 16px 20px;
+  height: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.dedicated-hero-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(13, 19, 31, 0.85);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-radius: 10px;
+  padding: 14px 20px;
+  margin-bottom: 16px;
+  backdrop-filter: blur(10px);
+}
+
+.dedicated-hero-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.hero-avatar-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  border: 2px solid #00f0ff;
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+}
+
+.dedicated-hero-title h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dedicated-hero-subtitle {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 3px;
+}
+
+.dedicated-hero-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.hero-price-box {
+  text-align: right;
+}
+
+.hero-live-price {
+  font-size: 24px;
+  font-weight: 900;
+  font-family: var(--k-font-mono);
+  color: #00f0ff;
+}
+
+.hero-live-sub {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+/* Dedicated Grid: Chart on Left, Intelligence Cards on Right */
+.dedicated-two-col {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 16px;
+  height: calc(100% - 90px);
+}
+
+.dedicated-chart-card {
+  background: rgba(13, 19, 31, 0.85);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.dedicated-sidebar-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+}
+
+/* ========================================================
+   IMAGE 2: SETUP A & SETUP B CARDS (68% WR & WILSON CI)
+   ======================================================== */
+.setup-card-box {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.setup-card-box.setup-a {
+  border-color: rgba(0, 230, 118, 0.4);
+}
+
+.setup-card-box.setup-b {
+  border-color: rgba(255, 170, 0, 0.4);
+}
+
+.setup-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.setup-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.setup-badge-pill {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.badge-reliable {
+  background: rgba(0, 230, 118, 0.18);
+  color: #00e676;
+  border: 1px solid rgba(0, 230, 118, 0.4);
+}
+
+.badge-review {
+  background: rgba(255, 170, 0, 0.18);
+  color: #ffaa00;
+  border: 1px solid rgba(255, 170, 0, 0.4);
+}
+
+.setup-metric-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.setup-metric-lbl {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.setup-metric-val {
+  font-size: 18px;
+  font-weight: 800;
+  font-family: var(--k-font-mono);
+  color: #00e676;
+}
+
+.setup-progress-track {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.setup-progress-fill {
+  height: 100%;
+  border-radius: 4px;
+}
+
+.setup-progress-fill.fill-green {
+  background: linear-gradient(90deg, #00b0ff, #00e676);
+}
+
+.setup-progress-fill.fill-orange {
+  background: linear-gradient(90deg, #ff9100, #ff3d00);
+}
+
+/* Wilson CI Slider */
+.wilson-ci-container {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin-top: 10px;
+}
+
+.wilson-ci-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #94a3b8;
+  margin-bottom: 6px;
+}
+
+.wilson-ci-val {
+  color: #00f0ff;
+  font-weight: 800;
+  font-family: var(--k-font-mono);
+}
+
+.wilson-bar {
+  position: relative;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  margin: 12px 0 6px 0;
+}
+
+.wilson-range {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: #00f0ff;
+  border-radius: 2px;
+}
+
+.wilson-target-dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #00f0ff;
+  border: 2px solid #0b0f19;
+  border-radius: 50%;
+  top: -3px;
+  transform: translateX(-50%);
+  box-shadow: 0 0 6px #00f0ff;
+}
+
+/* Mini Equity Sparkline SVG */
+.setup-profit-curve {
+  width: 100%;
+  height: 45px;
+  margin-top: 8px;
+}
+
+/* ========================================================
+   IMAGE 1: QUANTITATIVE TRADING MONITOR (RADAR & FORMULAS)
+   ======================================================== */
+.quant-lab-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding-bottom: 20px;
+}
+
+.quant-card {
+  background: rgba(13, 19, 31, 0.9);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-radius: 10px;
+  padding: 16px;
+  backdrop-filter: blur(10px);
+}
+
+.quant-card-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #00f0ff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* 1. Currency Strength Radar Wheel */
+.currency-wheel-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 280px;
+}
+
+.svg-radar-wheel {
+  width: 100%;
+  height: 100%;
+  max-width: 320px;
+  max-height: 280px;
+}
+
+/* 2. Math KaTeX Formula HUD Block */
+.quant-formula-hud {
+  background: rgba(8, 12, 20, 0.95);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-family: var(--k-font-mono);
+  color: #cbd5e1;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.quant-formula-hud .f-highlight {
+  color: #00f0ff;
+  font-weight: 700;
+}
+
+.quant-formula-hud .f-sub {
+  color: #ffd700;
+  font-size: 11.5px;
+  margin-top: 6px;
+}
+
+/* 3. MQL5 Live Terminal Code Window */
+.mql5-terminal-box {
+  background: #06090f;
+  border: 1px solid rgba(0, 230, 118, 0.35);
+  border-radius: 8px;
+  padding: 12px;
+  font-family: var(--k-font-mono);
+  font-size: 11.5px;
+  color: #a7f3d0;
+  overflow-x: auto;
+  line-height: 1.6;
+}
+
+.mql5-terminal-box .code-header {
+  color: #00e676;
+  font-weight: 800;
+  border-bottom: 1px solid rgba(0, 230, 118, 0.2);
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mql5-terminal-box .code-line {
+  display: flex;
+  gap: 12px;
+}
+
+.mql5-terminal-box .line-num {
+  color: #475569;
+  user-select: none;
+  width: 20px;
+  text-align: right;
+}
+
+.mql5-terminal-box .code-kw { color: #38bdf8; font-weight: 700; }
+.mql5-terminal-box .code-fn { color: #f59e0b; }
+.mql5-terminal-box .code-var { color: #f1f5f9; }
+.mql5-terminal-box .code-comment { color: #64748b; font-style: italic; }
+
+/* 4. Horizontal Momentum Bars */
+.momentum-bars-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--k-font-mono);
+  font-size: 12px;
+}
+
+.momentum-bars-table th {
+  color: #64748b;
+  font-size: 11px;
+  text-align: left;
+  padding: 4px 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.momentum-bars-table td {
+  padding: 5px 6px;
+  vertical-align: middle;
+}
+
+.bar-wrap {
+  width: 100%;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 3px;
+}
+
+.bar-fill.green {
+  background: linear-gradient(90deg, #10b981, #00e676);
+}
+
+.bar-fill.red {
+  background: linear-gradient(90deg, #ef4444, #ff3366);
+}
+
+/* ========================================================
+   FOREX FACTORY DEDICATED NEWS PAGE
+   ======================================================== */
+.news-page-grid {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 16px;
+  padding-bottom: 20px;
+}
+
+.macro-dossier-card {
+  background: rgba(13, 19, 31, 0.9);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-radius: 10px;
+  padding: 18px;
+  backdrop-filter: blur(10px);
+}
+
+.macro-dossier-card h3 {
+  margin: 0 0 10px 0;
+  color: #ffffff;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.macro-dossier-card p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #cbd5e1;
+  margin: 0 0 14px 0;
+}
+
+.scenario-impact-box {
+  background: rgba(8, 12, 20, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.scenario-impact-box.sc-bullish {
+  border-left: 4px solid #00e676;
+}
+
+.scenario-impact-box.sc-bearish {
+  border-left: 4px solid #ff3366;
+}
+
+.scenario-title {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.scenario-desc {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
